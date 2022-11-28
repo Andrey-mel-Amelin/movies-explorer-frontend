@@ -1,0 +1,20 @@
+@import 'normalize.css';
+@import './vendor/fonts/inter/inter.css';
+
+/* * {
+  outline: 1px rgba(255, 0, 0, 0.13) solid;
+} */
+
+@import './components/Preloader/Preloader.css';
+
+
+@import './components/App/App.scss';
+@import './components/Header/Header.scss';
+@import './components/Main/Main.scss';
+@import './components/Promo/Promo.scss';
+@import './components/NavTab/NavTab.scss';
+@import './components/AboutProject/AboutProject.scss';
+@import './components/Techs/Techs.scss';
+@import './components/AboutMe/AboutMe.scss';
+@import './components/Portfolio/Portfolio.scss';
+@import './components/Footer/Footer.scss'
