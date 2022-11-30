@@ -1,0 +1,50 @@
+.movies-card {
+  background-color: rgba(249, 249, 249, 1);
+  padding: 6px 6px 6px 22px;
+  display: grid;
+  grid-template: repeat(3, min-content) / 1fr 220px;
+  grid-template-areas: 'title image' 'duration image' 'like image';
+
+  &__title {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    grid-area: title;
+    margin: 0;
+    padding-top: 2px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  &__duration {
+    grid-area: duration;
+    font-size: 11px;
+    line-height: 13px;
+    color: rgba(160, 160, 160, 1);
+  }
+
+  &__like {
+    grid-area: like;
+    max-width: 14px;
+    max-height: 12px;
+    background-image: url('../../images/empty-like.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: 0.5s;
+
+    &_active {
+      background-image: url('../../images/like.svg');
+    }
+
+    &:hover {
+      transition: 0.5s;
+      opacity: 0.8;
+    }
+  }
+
+  &__image {
+    grid-area: image;
+  }
+}

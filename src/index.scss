@@ -5,11 +5,12 @@
   outline: 1px rgba(255, 0, 0, 0.13) solid;
 } */
 
-@import './components/Preloader/Preloader.css';
-
+@import './components/Preloader/Preloader.scss';
+@import './styles/logo.scss';
 
 @import './components/App/App.scss';
 @import './components/Header/Header.scss';
+@import './components/Navigation/Navigation.scss';
 @import './components/Main/Main.scss';
 @import './components/Promo/Promo.scss';
 @import './components/NavTab/NavTab.scss';
@@ -17,4 +18,8 @@
 @import './components/Techs/Techs.scss';
 @import './components/AboutMe/AboutMe.scss';
 @import './components/Portfolio/Portfolio.scss';
-@import './components/Footer/Footer.scss'
+@import './components/Movies/Movies.scss';
+@import './components/SearchForm/SearchForm.scss';
+@import './components/MoviesCardList/MoviesCardList.scss';
+@import './components/MoviesCard/MoviesCard.scss';
+@import './components/Footer/Footer.scss';

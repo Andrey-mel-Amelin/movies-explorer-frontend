@@ -4,15 +4,6 @@
   padding: 18px 70px;
   justify-content: space-between;
 
-  &__logo {
-    min-width: 38px;
-    min-height: 38px;
-    background-image: url(../../images/logo.svg);
-    background-size: 38px;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-
   &__auth-container {
     display: flex;
     align-items: center;

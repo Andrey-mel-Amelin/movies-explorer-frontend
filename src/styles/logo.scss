@@ -1,0 +1,12 @@
+.logo {
+  min-width: 38px;
+  min-height: 38px;
+  background-image: url(../images/logo.svg);
+  background-size: 38px;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &_type_navigation {
+    justify-self: flex-start;
+  }
+}

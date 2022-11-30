@@ -1,0 +1,27 @@
+.movies-card-list {
+  display: flex;
+  padding-top: 71px;
+  gap: 40px;
+  flex-direction: column;
+
+  &__button {
+    margin: 21px 0 79px;
+    align-self: center;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background-color: rgba(249, 249, 249, 1);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    min-width: 320px;
+    min-height: 36px;
+    transition: .5s;
+
+    &:hover {
+      opacity: .8;
+      transition: .5s;
+    }
+  }
+}

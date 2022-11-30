@@ -16,42 +16,7 @@ function AboutMe() {
         </a>
         <div className="about-me__photo" />
       </div>
-      <h4 className="about-me__portfolio-title">Портфолио</h4>
-      <ul className="about-me__list">
-        <li className="about-me__list-item">
-          <a
-            className="about-me__link about-me__link_for_list"
-            href="https://andrey-mel-amelin.github.io/how-to-learn/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Статичный сайт
-          </a>
-          <div className="about-me__arrow" />
-        </li>
-        <li className="about-me__list-item">
-          <a
-            className="about-me__link about-me__link_for_list"
-            href="https://andrey-mel-amelin.github.io/russian-travel/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Адаптивный сайт
-          </a>
-          <div className="about-me__arrow" />
-        </li>
-        <li className="about-me__list-item">
-          <a
-            className="about-me__link about-me__link_for_list"
-            href="https://github.com/Andrey-mel-Amelin"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Одностраничное приложение
-          </a>
-          <div className="about-me__arrow" />
-        </li>
-      </ul>
+      
     </section>
   );
 }

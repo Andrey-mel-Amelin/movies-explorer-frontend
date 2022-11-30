@@ -1,0 +1,45 @@
+.navigation {
+  display: grid;
+  grid-template: 1fr / repeat(3, 1fr);
+  align-items: center;
+  width: 100%;
+
+  &__links {
+    justify-self: center;
+    display: flex;
+    gap: 16px;
+  }
+
+  &__link {
+    color: black;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 18px;
+    transition: 0.5s;
+
+    &:hover {
+      transition: 0.5s;
+      opacity: 0.7;
+    }
+
+    &_type_profile {
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      justify-self: flex-end;
+    }
+  }
+
+  &__profile-logo {
+    min-width: 26px;
+    min-height: 30px;
+    background-color: rgba(249, 249, 249, 1);
+    background-image: url('../../images/profile-logo.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+  }
+}
