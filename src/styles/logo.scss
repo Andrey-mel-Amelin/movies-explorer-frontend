@@ -5,8 +5,7 @@
   background-size: 38px;
   background-position: center;
   background-repeat: no-repeat;
-
-  &_type_navigation {
-    justify-self: flex-start;
-  }
+  justify-self: flex-start;
+  grid-area: main;
+  z-index: 10;
 }

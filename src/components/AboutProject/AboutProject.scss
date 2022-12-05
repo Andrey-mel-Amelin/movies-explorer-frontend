@@ -3,6 +3,14 @@
   display: flex;
   flex-direction: column;
 
+  @media screen and (max-width: 769px) {
+    margin: 90px 50px;
+  }
+
+  @media screen and (max-width: 767px) {
+    margin: 70px 18px;
+  }
+
   &__title {
     font-weight: 400;
     font-size: 22px;
@@ -10,9 +18,19 @@
     letter-spacing: -0.04em;
     margin: 0;
 
+    @media screen and (max-width: 767px) {
+      font-size: 18px;
+      line-height: 22px;
+    }
+
     &_for_info {
       font-size: 20px;
       line-height: 24px;
+
+      @media screen and (max-width: 767px) {
+        font-size: 18px;
+        line-height: 22px;
+      }
     }
   }
 
@@ -22,12 +40,31 @@
     border-top: 1px solid black;
     display: flex;
     gap: 52px;
+
+    @media screen and (max-width: 769px) {
+      gap: 37px;
+    }
+
+    @media screen and (max-width: 767px) {
+      padding-top: 60px;
+      margin-top: 28px;
+      flex-direction: column;
+      gap: 56px;
+    }
   }
 
   &__info-item {
     display: flex;
     flex-direction: column;
     gap: 26px;
+
+    @media screen and (max-width: 769px) {
+      gap: 22px;
+    }
+
+    @media screen and (max-width: 767px) {
+      gap: 16px;
+    }
   }
 
   &__text {
@@ -35,12 +72,32 @@
     font-size: 14px;
     line-height: 20px;
 
+    @media screen and (max-width: 769px) {
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    @media screen and (max-width: 767px) {
+      font-size: 11px;
+      line-height: 16px;
+    }
+
     &_type_grey {
       justify-content: center;
       color: rgba(160, 160, 160, 1);
       font-weight: 500;
       line-height: 17px;
       text-align: center;
+
+      @media screen and (max-width: 769px) {
+        font-size: 14px;
+        line-height: 17px;
+      }
+
+      @media screen and (max-width: 767px) {
+        font-size: 11px;
+        line-height: 13px;
+      }
     }
   }
 
@@ -49,12 +106,28 @@
     display: grid;
     grid-template: 1fr / repeat(5, 1fr);
     grid-template-areas: 'backend frontend frontend frontend frontend';
+
+    @media screen and (max-width: 769px) {
+      margin-top: 93px;
+      grid-template: 1fr / 140px repeat(4, 1fr);
+      grid-template-areas: 'backend frontend frontend frontend frontend';
+    }
+
+    @media screen and (max-width: 767px) {
+      margin-top: 60px;
+      grid-template: 1fr / 100px repeat(4, 1fr);
+      grid-template-areas: 'backend frontend frontend frontend frontend';
+    }
   }
 
   &__timeline-item {
     display: flex;
     flex-direction: column;
     gap: 14px;
+
+    @media screen and (max-width: 767px) {
+      gap: 10px;
+    }
 
     &_for_backend {
       grid-area: backend;
@@ -72,6 +145,12 @@
     justify-content: center;
     font-size: 14px;
     line-height: 17px;
+
+    @media screen and (max-width: 767px) {
+      min-height: 35px;
+      font-size: 11px;
+      line-height: 13px;
+    }
 
     &_for_backend {
       background-color: black;

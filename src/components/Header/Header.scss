@@ -1,32 +1,102 @@
+%menu {
+  display: block;
+  background-color: black;
+  position: absolute;
+  margin-top: 10px;
+  height: 3px;
+  width: 28px;
+  transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+
+  @media screen and(max-width:767px) {
+    width: 22px;
+    height: 2.5px;
+  }
+}
+
 .header {
-  display: flex;
-  margin: 0;
-  padding: 18px 70px;
-  justify-content: space-between;
+  display: grid;
+  grid-template: 1fr / 1fr;
+  grid-template-areas: 'main';
+  margin: 18px 70px;
+  justify-content: flex-end;
+  align-items: center;
+
+  @media screen and (max-width: 769px) {
+    margin: 18px 30px;
+  }
+
+  @media screen and (max-width: 767px) {
+    margin: 18px 14px;
+  }
+
+  &_for_auth {
+    margin: 70px auto 40px;
+    max-width: 396px;
+
+    @media screen and (max-width: 769px) {
+      margin: 232px auto 40px;
+    }
+
+    @media screen and (max-width: 769px) {
+      margin: 56px auto 81px;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__title {
+    margin: 40px 0 0;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+
+    @media screen and (max-width: 769px) {
+      margin: 50px 0 0;
+    }
+  }
 
   &__auth-container {
     display: flex;
     align-items: center;
     gap: 30px;
+    grid-area: main;
+    justify-self: flex-end;
+
+    @media screen and (max-width: 767px) {
+      gap: 14px;
+    }
   }
 
-  &__button {
+  &__link {
     max-height: 16px;
     padding: 0;
-    border: none;
-    background-color: transparent;
+    text-decoration: none;
+    color: inherit;
     font-weight: 500;
     font-size: 12px;
     line-height: 16px;
     transition: 0.5s;
     cursor: pointer;
 
+    @media screen and (max-width: 767px) {
+      font-size: 10px;
+      line-height: 16px;
+    }
+
     &_type_black {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       min-height: 32px;
       min-width: 76px;
       color: white;
       background-color: black;
       border-radius: 3px;
+
+      @media screen and (max-width: 767px) {
+        min-height: 26px;
+        min-width: 54px;
+      }
 
       &:hover {
         opacity: 0.8;
@@ -36,6 +106,70 @@
     &:hover {
       transition: 0.5s;
       opacity: 0.7;
+    }
+  }
+
+  &__menu-container {
+    margin-right: 8px;
+    display: flex;
+    position: relative;
+    min-width: 28px;
+    min-height: 22px;
+    grid-area: main;
+    justify-self: flex-end;
+    z-index: 12;
+
+    @media screen and(max-width:767px) {
+      min-width: 22px;
+      min-height: 21px;
+      margin-right: 9px;
+    }
+
+    &_type_mobile {
+      margin-right: -6px;
+
+      @media screen and(max-width:767px) {
+        margin: -17px 4px 0 0;
+      }
+    }
+  }
+
+  &__menu {
+    @extend %menu;
+    transition: 0.5s;
+
+    &::after {
+      @extend %menu;
+      content: '';
+      margin-top: -10px;
+
+      @media screen and(max-width:767px) {
+        margin-top: -9px;
+      }
+    }
+
+    &::before {
+      @extend %menu;
+      content: '';
+      margin-top: 10px;
+
+      @media screen and(max-width:767px) {
+        margin-top: 9px;
+      }
+    }
+
+    &_active {
+      background-color: rgba(255, 255, 255, 0);
+
+      &::after {
+        margin-top: 0;
+        transform: rotate(-405deg);
+      }
+
+      &::before {
+        margin-top: 0;
+        transform: rotate(405deg);
+      }
     }
   }
 }

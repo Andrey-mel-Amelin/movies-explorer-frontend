@@ -1,13 +1,13 @@
-.movies {
+.saved-movies {
   display: flex;
   flex-direction: column;
-  margin: 0 70px;
+  margin: 0 70px 150px;
 
   @media screen and(max-width: 769px) {
-    margin: 0 30px;
+    margin: 0 30px 167px;
   }
 
   @media screen and(max-width: 767px) {
-    margin: 0;
+    margin: 0 0 239px;
   }
 }

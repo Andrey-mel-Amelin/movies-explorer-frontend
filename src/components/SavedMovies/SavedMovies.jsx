@@ -1,10 +1,10 @@
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
 /* import Preloader from "../Preloader/Preloader"; реализовать когда будет подключен API*/
-import SearchForm from "../SearchForm/SearchForm";
+import SearchForm from '../SearchForm/SearchForm';
 
-function Movies({ location }) {
+function SavedMovies({ location }) {
   return (
-    <section className="movies">
+    <section className="saved-movies">
       <SearchForm />
       {/* <Preloader /> реализовать когда будет подключен API */}
       <MoviesCardList location={location} />
@@ -12,4 +12,4 @@ function Movies({ location }) {
   );
 }
 
-export default Movies;
+export default SavedMovies;

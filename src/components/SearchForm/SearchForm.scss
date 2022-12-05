@@ -1,4 +1,5 @@
 .search-form {
+  z-index: 1;
   padding: 82px 0 39px;
   border-bottom: 1px solid rgba(232, 232, 232, 1);
   margin-bottom: 10px;
@@ -6,6 +7,12 @@
   grid-template: repeat(2, min-content) / calc(100% - 80px);
   gap: 31px 0;
   grid-template-areas: 'input submit' 'checkbox checkbox';
+
+  @media screen and(max-width: 767px) {
+    margin: 0 14px;
+    padding: 81px 0 43px;
+    gap: 44px 0;
+  }
 
   &__input {
     grid-area: input;
@@ -15,6 +22,12 @@
     border-radius: 4px;
     font-size: 14px;
     line-height: 18px;
+
+    @media screen and(max-width: 767px) {
+      padding: 0 0 0 16px;
+      font-size: 12px;
+      line-height: 18px;
+    }
   }
 
   &__submit {
@@ -31,15 +44,16 @@
     border-radius: 30px;
     color: white;
     background-color: black;
-    transition: .5s;
+    transition: 0.5s;
 
     &:hover {
-      opacity: .8;
-      transition: .5s;
+      opacity: 0.8;
+      transition: 0.5s;
     }
   }
 
   &__label {
+    z-index: -1;
     min-height: 20px;
     min-width: 156px;
     grid-area: checkbox;
@@ -48,6 +62,10 @@
     align-items: center;
     justify-self: center;
     position: relative;
+
+    @media screen and(max-width: 767px) {
+      min-width: 148px
+    }
   }
 
   &__checkbox {
@@ -73,7 +91,7 @@
       box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
       border-radius: 50%;
       top: 2px;
-      left: 2px;
+      left: 18px;
       content: '';
       min-width: 16px;
       min-height: 16px;
@@ -83,7 +101,7 @@
     &:checked {
       &::after {
         transition: 0.2s;
-        left: 18px;
+        left: 2px;
       }
     }
   }
@@ -91,5 +109,9 @@
   &__checkbox-text {
     font-size: 12px;
     line-height: 18px;
+
+    @media screen and(max-width: 767px) {
+      font-size: 11px;
+    }
   }
 }
