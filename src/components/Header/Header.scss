@@ -111,7 +111,7 @@
 
   &__menu-container {
     margin-right: 8px;
-    display: flex;
+    display: none;
     position: relative;
     min-width: 28px;
     min-height: 22px;
@@ -119,7 +119,8 @@
     justify-self: flex-end;
     z-index: 12;
 
-    @media screen and(max-width:767px) {
+    @media screen and(max-width:768px) {
+      display: flex;
       min-width: 22px;
       min-height: 21px;
       margin-right: 9px;

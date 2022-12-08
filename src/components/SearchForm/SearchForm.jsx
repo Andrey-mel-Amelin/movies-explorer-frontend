@@ -7,7 +7,7 @@ function SearchForm() {
       </button>
       <label htmlFor="search-film" className="search-form__label">
         <span className="search-form__checkbox-text">Короткометражки</span>
-        <input id="search-film" className="search-form__checkbox" type="checkbox" />
+        <input required id="search-film" className="search-form__checkbox" type="checkbox" />
       </label>
     </form>
   );

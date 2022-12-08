@@ -5,11 +5,11 @@ function Login() {
     <form className="form">
       <label className="form__label">
         E-mail
-        <input type="text" className="form__input" placeholder="E-mail" />
+        <input required type="text" className="form__input" placeholder="E-mail" />
       </label>
       <label className="form__label" placeholder="Пароль">
         Пароль
-        <input type="password" className="form__input" placeholder="Пароль" />
+        <input required type="password" className="form__input" placeholder="Пароль" />
       </label>
       <button className="form__button form__button_for_login" type="submit">
         Войти
