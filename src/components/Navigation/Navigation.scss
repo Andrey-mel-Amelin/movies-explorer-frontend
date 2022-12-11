@@ -1,0 +1,148 @@
+.navigation {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: '. movies profile';
+  align-items: center;
+  min-width: 100%;
+  min-height: 38px;
+  position: relative;
+  grid-area: main;
+
+  @media screen and(max-width: 768px) {
+    position: fixed;
+    display: flex;
+    justify-content: flex-end;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: 0.5s;
+    z-index: -1;
+
+    &_active {
+      z-index: 11;
+      transition: 0.1s;
+      opacity: 1;
+    }
+  }
+
+  @media screen and(max-width: 767px) {
+    &_active {
+      z-index: 11;
+      transition: 0.1s;
+      opacity: 1;
+    }
+  }
+
+  &__links {
+    grid-area: movies;
+    justify-self: center;
+    display: flex;
+    gap: 16px;
+
+    @media screen and(max-width: 768px) {
+      display: grid;
+      gap: 22px;
+      grid-template: 138px repeat(3, max-content) 1fr / 1fr;
+      grid-template-areas: '.' 'main' 'films' 'saved-films' 'profile';
+      background-color: white;
+      min-width: 520px;
+      min-height: 100vh;
+      transform: translateX(100%);
+      transition: 0.5s;
+      justify-items: center;
+
+      &_active {
+        transition: 0.5s;
+        transform: translateX(0);
+      }
+    }
+
+    @media screen and(max-width: 767px) {
+      gap: 16px;
+      grid-template: 129px repeat(3, max-content) 1fr / 1fr;
+      grid-template-areas: '.' 'main' 'films' 'saved-films' 'profile';
+      min-width: 320px;
+    }
+  }
+
+  &__link {
+    color: black;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 18px;
+    transition: 0.5s;
+
+    &:hover {
+      transition: 0.5s;
+      opacity: 0.7;
+    }
+
+    @media screen and(max-width: 768px) {
+      display: flex;
+      min-height: 28px;
+      gap: 3px;
+      flex-direction: column;
+      grid-area: main;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 22px;
+
+      &:nth-of-type(2) {
+        grid-area: films;
+      }
+
+      &:nth-of-type(3) {
+        grid-area: saved-films;
+      }
+    }
+
+    @media screen and(max-width: 767px) {
+      gap: 6px;
+      min-height: 30px;
+    }
+
+    &_type_profile {
+      grid-area: profile;
+      display: flex;
+      align-items: center;
+      gap: 17px;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      justify-self: flex-end;
+
+      @media screen and(max-width: 768px) {
+        display: grid;
+        min-height: 35px;
+        gap: 3px 17px;
+        grid-template-areas: 'profile logo' 'underline underline';
+        margin-bottom: 92px;
+        justify-self: center;
+        align-self: flex-end;
+      }
+
+      @media screen and(max-width: 767px) {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__profile-logo {
+    grid-area: logo;
+    min-width: 26px;
+    min-height: 30px;
+    background-color: rgba(249, 249, 249, 1);
+    background-image: url('../../images/profile-logo.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+  }
+
+  &__underline {
+    grid-area: underline;
+    border: 1px solid black;
+  }
+}

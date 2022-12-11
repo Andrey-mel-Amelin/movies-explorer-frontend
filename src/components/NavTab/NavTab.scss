@@ -1,0 +1,37 @@
+.nav-tab {
+  display: flex;
+  gap: 10px;
+
+  @media screen and(max-width: 767px) {
+    gap: 6px;
+  }
+
+  &__link {
+    min-width: 96px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: rgba(232, 232, 232, 1);
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration: none;
+    transition: 0.5s;
+
+    @media screen and(max-width: 767px) {
+      min-width: 82px;
+      min-height: 26px;
+      border-radius: 6px;
+      font-size: 10px;
+      line-height: 16px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transition: 0.5s;
+    }
+  }
+}

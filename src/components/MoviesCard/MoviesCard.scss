@@ -1,0 +1,86 @@
+.movies-card {
+  background-color: rgba(249, 249, 249, 1);
+  padding: 6px 6px 6px 22px;
+  display: grid;
+  grid-template: repeat(3, min-content) / 1fr 220px;
+  grid-template-areas: 'title image' 'duration image' 'button image';
+
+  @media screen and(max-width: 767px) {
+    padding: 0 0 14px;
+    min-width: 300px;
+    grid-template: repeat(3, min-content) / repeat(2, min-content);
+    grid-template-areas: 'image image' 'title button' 'duration .';
+  }
+
+  &__title {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    grid-area: title;
+    margin: 0;
+    padding-top: 2px;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+
+    @media screen and(max-width: 767px) {
+      min-width: 230px;
+      margin: 14px 0 8px;
+      font-size: 12px;
+      line-height: 15px;
+      padding-left: 12px;
+    }
+  }
+
+  &__duration {
+    grid-area: duration;
+    font-size: 11px;
+    line-height: 13px;
+    color: rgba(160, 160, 160, 1);
+
+    @media screen and(max-width: 767px) {
+      padding-left: 12px;
+    }
+  }
+
+  &__button {
+    grid-area: button;
+    max-width: 14px;
+    max-height: 12px;
+    background-image: url('../../images/empty-like.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: 0.5s;
+
+    @media screen and(max-width: 767px) {
+      min-width: 14px;
+      justify-self: flex-end;
+      margin: 17.5px 16px 0 0px;
+    }
+
+    &:hover {
+      transition: 0.5s;
+      opacity: 0.8;
+    }
+
+    &_active {
+      background-image: url('../../images/like.svg');
+    }
+
+    &_type_delete {
+      background-image: url('../../images/d5.svg');
+      max-height: 15px;
+    }
+  }
+
+  &__image {
+    grid-area: image;
+
+    @media screen and(max-width: 767px) {
+      min-width: 300px;
+    }
+  }
+}

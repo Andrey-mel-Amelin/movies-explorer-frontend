@@ -1,0 +1,13 @@
+.movies {
+  display: flex;
+  flex-direction: column;
+  margin: 0 70px;
+
+  @media screen and(max-width: 769px) {
+    margin: 0 30px;
+  }
+
+  @media screen and(max-width: 767px) {
+    margin: 0;
+  }
+}

@@ -1,0 +1,11 @@
+.logo {
+  min-width: 38px;
+  min-height: 38px;
+  background-image: url(../images/logo.svg);
+  background-size: 38px;
+  background-position: center;
+  background-repeat: no-repeat;
+  justify-self: flex-start;
+  grid-area: main;
+  z-index: 10;
+}
