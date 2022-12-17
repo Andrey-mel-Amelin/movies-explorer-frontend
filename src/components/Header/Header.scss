@@ -30,8 +30,8 @@
   }
 
   &_for_auth {
-    margin: 70px auto 40px;
-    max-width: 396px;
+    margin: 18px auto;
+    min-width: calc(100% - 140px);
 
     @media screen and (max-width: 769px) {
       margin: 232px auto 40px;

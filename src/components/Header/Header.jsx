@@ -1,26 +1,28 @@
 import { Link } from 'react-router-dom';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ menuActivity, onMenuToggle, location }) {
-  const menuPath = ['/profile', '/movies', '/saved-movies'];
+function Header({ loggedIn, menuActivity, onMenuToggle, location }) {
   const authPath = ['/signup', '/signin'];
 
   return (
-    <header className={`header ${authPath.includes(location.pathname) ? 'header_for_auth' : ''}`}>
+    <header className={`header ${!loggedIn || authPath.includes(location.pathname) ? 'header_for_auth' : ''}`}>
       <Link to="/" className="logo" />
       {location.pathname === '/signin' && <h2 className="header__title">Рады видеть!</h2>}
       {location.pathname === '/signup' && <h2 className="header__title">Добро пожаловать!</h2>}
       <>
-        {location.pathname === '/' && (
+        {!loggedIn ? (
           <>
-            <div className="header__auth-container">
-              <Link to="/signup" className="header__link">
-                Регистрация
-              </Link>
-              <Link to="/signin" className="header__link header__link_type_black">
-                Войти
-              </Link>
-            </div>
+            {!authPath.includes(location.pathname) && (
+              <div className="header__auth-container">
+                <Link to="/signup" className="header__link">
+                  Регистрация
+                </Link>
+                <Link to="/signin" className="header__link header__link_type_black">
+                  Войти
+                </Link>
+              </div>
+            )}
+
             {menuActivity && (
               <>
                 <div
@@ -33,8 +35,7 @@ function Header({ menuActivity, onMenuToggle, location }) {
               </>
             )}
           </>
-        )}
-        {menuPath.includes(location.pathname) && (
+        ) : (
           <>
             <Navigation location={location} menuActivity={menuActivity} />
             <div

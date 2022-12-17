@@ -1,13 +1,28 @@
-import MoviesCardList from "../MoviesCardList/MoviesCardList";
-/* import Preloader from "../Preloader/Preloader"; реализовать когда будет подключен API*/
-import SearchForm from "../SearchForm/SearchForm";
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import SearchForm from '../SearchForm/SearchForm';
 
-function Movies({ location }) {
+function Movies({
+  isLiked,
+  onMovieLike,
+  isUploadError,
+  isLoading,
+  movies,
+  savedMovies,
+  onGetMovie,
+  location,
+}) {
   return (
     <section className="movies">
-      <SearchForm />
-      {/* <Preloader /> реализовать когда будет подключен API */}
-      <MoviesCardList location={location} />
+      <SearchForm location={location} onGetMovie={onGetMovie} />
+      <MoviesCardList
+        isLiked={isLiked}
+        onMovieLike={onMovieLike}
+        isUploadError={isUploadError}
+        isLoading={isLoading}
+        movies={movies}
+        savedMovies={savedMovies}
+        location={location}
+      />
     </section>
   );
 }
