@@ -5,7 +5,7 @@ function Header({ loggedIn, menuActivity, onMenuToggle, location }) {
   const authPath = ['/signup', '/signin'];
 
   return (
-    <header className={`header ${!loggedIn || authPath.includes(location.pathname) ? 'header_for_auth' : ''}`}>
+    <header className={`header ${authPath.includes(location.pathname) ? 'header_for_auth' : ''}`}>
       <Link to="/" className="logo" />
       {location.pathname === '/signin' && <h2 className="header__title">Рады видеть!</h2>}
       {location.pathname === '/signup' && <h2 className="header__title">Добро пожаловать!</h2>}
