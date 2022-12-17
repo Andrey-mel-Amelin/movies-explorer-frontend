@@ -90,7 +90,7 @@ function App() {
       .login(name, email, password)
       .then((res) => {
         if (res) {
-          history('/');
+          history('/movies');
           setResStatusOk(true);
           setLoggedIn(true);
         }
