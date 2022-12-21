@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import * as mainApi from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import { api } from '../../utils/MoviesApi';
+
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -18,55 +18,29 @@ function App() {
   const history = useNavigate();
   const allowedPath = ['/', '/movies', '/saved-movies', '/signup', '/signin', '/profile'];
 
-  const [isUploadError, setIsUploadError] = useState(false);
   const [menuActivity, setMenuActivity] = useState(false);
   const [resStatusOk, setResStatusOk] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(true);
-  const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [savedFilterMovies, setSavedFilterMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
-  const [isSearchError, setSearchError] = useState(false);
-  const [isSavedSearch, setIsSavedSearch] = useState(false);
 
-  // проверяем токен / получаем сохраненые фильмы
+  // проверяем токен
   useEffect(() => {
     getContent();
   }, []);
+
+  // загружаем сохраненные фильмы с сервера
+  useEffect(() => {
+    if (loggedIn && currentUser) {
+      mainApi.getMovies().then((movies) => setSavedMovies(movies));
+    }
+  }, [loggedIn, currentUser]);
 
   useEffect(() => {
     if (('/saved-movies' || '/movies') !== location.pathname) {
       window.removeEventListener('resize', () => {});
     }
   }, [location]);
-
-  // проверяем что фильмы пришли в стейт, и сохраняем в локальное хранилище
-  useEffect(() => {
-    if (movies.length === 0) return;
-    localStorage.setItem('search-movies', JSON.stringify(movies));
-  }, [movies]);
-
-  // при авторизации получаем список фильмо и сверяем токен
-  useEffect(() => {
-    if (!loggedIn) return;
-    mainApi
-      .getMovies()
-      .then((movies) => {
-        setSavedMovies(movies);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    mainApi
-      .checkToken()
-      .then((info) => {
-        setCurrentUser(info);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [loggedIn]);
 
   // регистрация
   function handleRegister(name, email, password) {
@@ -117,6 +91,8 @@ function App() {
     return mainApi
       .logout()
       .then(() => {
+        setSavedMovies([]);
+        localStorage.clear();
         setLoggedIn(false);
         history('/');
       })
@@ -127,12 +103,9 @@ function App() {
   function getContent() {
     return mainApi
       .checkToken()
-      .then((res) => {
-        if (res) {
-          setLoggedIn(true);
-          if (!localStorage.getItem('search-movies')) return;
-          setMovies(JSON.parse(localStorage.getItem('search-movies')));
-        }
+      .then((info) => {
+        setLoggedIn(true);
+        setCurrentUser(info);
       })
       .catch((err) => {
         setLoggedIn(false);
@@ -145,66 +118,20 @@ function App() {
     setMenuActivity((active) => !active);
   }
 
-  // поиск фильмов по названию и продолжительности
-  function handleGetMovie(value, isShort) {
-    if (location.pathname === '/movies') {
-      setIsSavedSearch(false);
-      setIsLoading(true);
-      api
-        .getMovies()
-        .then((movie) => {
-          setIsLoading(false);
-          setMovies(
-            movie.filter((i) => {
-              if (isShort) {
-                return i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= 40;
-              } else {
-                return i.nameRU.toLowerCase().includes(value.toLowerCase());
-              }
-            })
-          );
-        })
-        .catch(() => {
-          setIsUploadError(true);
-        });
-    } else {
-      setIsSavedSearch(true);
-
-      const savedSearch = savedMovies.find((i) => i.nameRU.toLowerCase().includes(value.toLowerCase()));
-      const savedShortSearch = savedMovies.find(
-        (i) => i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= 40
-      );
-
-      if (!savedSearch) {
-        setSearchError(true);
-        setSavedFilterMovies([]);
-      } else if (isShort && savedShortSearch) {
-        setSearchError(false);
-        setSavedFilterMovies([savedShortSearch]);
-      } else {
-        setSearchError(false);
-        setSavedFilterMovies([]);
-      }
-    }
-  }
-
   // добавить/убрать фильм в сохраненные на сервер
   function handleMovieLike(movie) {
     const savedMovie = savedMovies.find((i) => i.movieId === movie.id || movie.movieId);
 
     return mainApi
       .changeLikeMovieStatus(savedMovie && location.pathname === '/movies' ? savedMovie : movie, savedMovie)
-      .then((newMovie) => {
+      .then((reqMovie) => {
         if (!savedMovie) {
-          setSavedMovies([...savedMovies, newMovie]);
+          setSavedMovies([reqMovie, ...savedMovies]);
         } else if (location.pathname === '/movies') {
           setSavedMovies((state) => state.filter((c) => c.movieId !== movie.id));
         } else {
           setSavedMovies((state) => state.filter((c) => c.movieId !== movie.movieId));
         }
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }
 
@@ -225,15 +152,7 @@ function App() {
                 path="/movies"
                 element={
                   <ProtectedRoute redirectTo="/">
-                    <Movies
-                      onMovieLike={handleMovieLike}
-                      isUploadError={isUploadError}
-                      isLoading={isLoading}
-                      movies={movies}
-                      savedMovies={savedMovies}
-                      onGetMovie={handleGetMovie}
-                      location={location}
-                    />
+                    <Movies onMovieLike={handleMovieLike} savedMovies={savedMovies} location={location} />
                   </ProtectedRoute>
                 }
               />
@@ -241,16 +160,7 @@ function App() {
                 path="/saved-movies"
                 element={
                   <ProtectedRoute redirectTo="/">
-                    <SavedMovies
-                      isSavedSearch={isSavedSearch}
-                      savedFilterMovies={savedFilterMovies}
-                      movies={movies}
-                      isSearchError={isSearchError}
-                      onGetMovie={handleGetMovie}
-                      onMovieLike={handleMovieLike}
-                      savedMovies={savedMovies}
-                      location={location}
-                    />
+                    <SavedMovies onMovieLike={handleMovieLike} savedMovies={savedMovies} location={location} />
                   </ProtectedRoute>
                 }
               />

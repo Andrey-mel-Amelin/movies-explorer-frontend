@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-function SearchForm({ location, onGetMovie }) {
+function SearchForm({ onSearchSavedFilms, location, onSearchFilms }) {
   const [isInvalid, setInvalid] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [searchCheckbox, setCheckbox] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem('search-value') && !localStorage.getItem('search-checkbox')) return;
-    if (location.pathname === '/saved-movies') return
+    if (location.pathname === '/saved-movies') return;
     setSearchValue(JSON.parse(localStorage.getItem('search-value')));
     setCheckbox(JSON.parse(localStorage.getItem('search-checkbox')));
   }, [location]);
@@ -28,18 +28,15 @@ function SearchForm({ location, onGetMovie }) {
       return;
     }
 
-    const searchStorage = {
-      value: searchValue,
-      checkbox: searchCheckbox,
-    };
-
     setInvalid(false);
-    onGetMovie(searchValue, searchCheckbox);
 
-    if (location.pathname === '/saved-movies') return;
-
-    localStorage.setItem('search-value', JSON.stringify(searchStorage.value));
-    localStorage.setItem('search-checkbox', JSON.stringify(searchStorage.checkbox));
+    if (location.pathname === '/movies') {
+      localStorage.setItem('search-value', JSON.stringify(searchValue));
+      localStorage.setItem('search-checkbox', JSON.stringify(searchCheckbox));
+      onSearchFilms(searchValue, searchCheckbox);
+    } else {
+      onSearchSavedFilms(searchValue, searchCheckbox);
+    }
   }
 
   return (

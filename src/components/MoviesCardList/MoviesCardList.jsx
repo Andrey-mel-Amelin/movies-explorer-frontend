@@ -5,41 +5,51 @@ import Preloader from '../Preloader/Preloader';
 function MoviesCardList({
   isSavedSearch,
   savedFilterMovies,
+  filterMovies,
   isSearchError,
   onMovieLike,
   isUploadError,
   isLoading,
-  movies,
   savedMovies,
   location,
 }) {
   const [moviesList, setMoviesList] = useState([]);
   const [stepShowMovies, setStepShowMovies] = useState(7);
-  window.addEventListener('resize', () => {
-    setTimeout(() => {
-      window.screen.width <= 768 ? setStepShowMovies(5) : setStepShowMovies(7);
-    }, 3000);
-  });
+
+  useEffect(() => {
+    if (location.pathname === '/movies') {
+      window.addEventListener('resize', () => {
+        setTimeout(() => {
+          window.screen.width <= 768 ? setStepShowMovies(5) : setStepShowMovies(7);
+        }, 3000);
+      });
+    } else {
+      window.removeEventListener('resize', () => {});
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     setMoviesList(
       location.pathname === '/movies'
-        ? movies.slice(0, stepShowMovies)
+        ? filterMovies.slice(0, stepShowMovies)
         : isSavedSearch
         ? savedFilterMovies
         : savedMovies
     );
-  }, [movies, stepShowMovies, savedMovies, location.pathname, isSavedSearch, savedFilterMovies]);
+  }, [filterMovies, savedMovies, isSavedSearch, savedFilterMovies, stepShowMovies, location.pathname]);
 
   function handleButton() {
-    setMoviesList(movies.slice(0, moviesList.length + stepShowMovies));
+    setMoviesList(filterMovies.slice(0, moviesList.length + stepShowMovies));
   }
 
   return (
     <section className="movies-card-list">
-      {(movies || savedMovies).length === 0 ? (
-        <p className="movies-card-list__error-message">Ничего не найдено.</p>
-      ) : isLoading ? (
+      {!moviesList.length && !isLoading && (
+        <p className="movies-card-list__error-message">
+          {!savedMovies.length ? 'Нет сохраненных фильмов.' : 'Ничего не найдено.'}
+        </p>
+      )}
+      {isLoading ? (
         <Preloader />
       ) : isUploadError ? (
         <p className="movies-card-list__error-message">
@@ -52,14 +62,14 @@ function MoviesCardList({
         <>
           {moviesList.map((movie) => (
             <MoviesCard
-              key={movie.id || movie.movieId}
-              savedMovies={savedMovies}
               movie={movie}
+              key={movie.id || movie._id}
+              savedMovies={savedMovies}
               onMovieLike={onMovieLike}
               location={location}
             />
           ))}
-          {location.pathname === '/movies' && movies.length !== moviesList.length && (
+          {location.pathname === '/movies' && filterMovies.length !== moviesList.length && (
             <button onClick={handleButton} className="movies-card-list__button">
               Ещё
             </button>

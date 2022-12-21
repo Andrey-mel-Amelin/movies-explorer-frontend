@@ -1,0 +1,92 @@
+.info-popup {
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  position: fixed;
+  right: 0;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(00, 00, 00, 0.5);
+  visibility: hidden;
+  transition: 0.5s;
+  opacity: 0;
+
+  &_visible {
+    visibility: visible;
+    transition: 0.5s;
+    opacity: 1;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    width: min-content;
+    height: min-content;
+    position: relative;
+  }
+
+  &__close-btn {
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    background-image: url(../../images/close-btn.svg);
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    width: 32px;
+    height: 32px;
+    transition: 0.5s;
+    cursor: pointer;
+
+    @media screen and (max-width: 767px) {
+      right: 0;
+      top: -35px;
+      background-size: 20px 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      transition: 0.5s;
+      opacity: 0.6;
+    }
+  }
+
+  &__res-status {
+    min-width: 120px;
+    min-height: 120px;
+    margin: 60px auto 0;
+    background-image: url(../../images/res-bad.svg);
+
+    &_type_res-ok {
+      background-image: url(../../images/res-ok.svg);
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    margin: 50px auto 0;
+  }
+
+  &__message {
+    min-width: 358px;
+    margin: 32px 36px 60px;
+    color: black;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 767px) {
+    min-width: 244px;
+    font-size: 20px;
+    line-height: 24px;
+    margin: 40px 18px 50px;
+  }
+}
