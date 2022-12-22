@@ -32,7 +32,9 @@ function App() {
   // загружаем сохраненные фильмы с сервера
   useEffect(() => {
     if (loggedIn && currentUser) {
-      mainApi.getMovies().then((movies) => setSavedMovies(movies));
+      mainApi.getMovies().then((movies) => {
+        setSavedMovies(movies)
+      });
     }
   }, [loggedIn, currentUser]);
 

@@ -1,4 +1,5 @@
-export const BASE_URL = 'https://api.amelin.movies.nomoredomains.club/';
+// export const BASE_URL = 'https://api.amelin.movies.nomoredomains.club/';
+export const BASE_URL = 'http://localhost:3001/';
 
 function request({ url, method = 'POST', data }) {
   return fetch(`${BASE_URL}${url}`, {

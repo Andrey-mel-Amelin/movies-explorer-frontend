@@ -4,7 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 
 function SavedMovies({ onMovieLike, savedMovies, location }) {
   const [savedFilterMovies, setSavedFilterMovies] = useState([]);
-  const [isSavedSearch, setIsSavedSearch] = useState(false)
+  const [isSavedSearch, setIsSavedSearch] = useState(false);
 
   function handleSearchSavedFilms(value, checkbox) {
     setIsSavedSearch(true);
@@ -27,6 +27,9 @@ function SavedMovies({ onMovieLike, savedMovies, location }) {
   return (
     <section className="saved-movies">
       <SearchForm onSearchSavedFilms={handleSearchSavedFilms} location={location} />
+      {!savedMovies.length
+        ? ''
+        : !savedFilterMovies.length && isSavedSearch && <p className="movies__error-message">Ничего не найдено.</p>}
       <MoviesCardList
         isSavedSearch={isSavedSearch}
         savedFilterMovies={savedFilterMovies}

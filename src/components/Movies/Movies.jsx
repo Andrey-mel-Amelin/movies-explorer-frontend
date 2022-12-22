@@ -53,6 +53,7 @@ function Movies({ onMovieLike, savedMovies, location }) {
   return (
     <section className="movies">
       <SearchForm location={location} onSearchFilms={handleSearchFilms} />
+      {!allMovieslist.length ? '' : !filterMovies.length && (<p className="movies__error-message">Ничего не найдено.</p>)}
       <MoviesCardList
         onMovieLike={onMovieLike}
         isUploadError={isUploadError}

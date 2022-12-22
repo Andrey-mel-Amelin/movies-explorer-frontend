@@ -44,11 +44,6 @@ function MoviesCardList({
 
   return (
     <section className="movies-card-list">
-      {!moviesList.length && !isLoading && (
-        <p className="movies-card-list__error-message">
-          {!savedMovies.length ? 'Нет сохраненных фильмов.' : 'Ничего не найдено.'}
-        </p>
-      )}
       {isLoading ? (
         <Preloader />
       ) : isUploadError ? (
