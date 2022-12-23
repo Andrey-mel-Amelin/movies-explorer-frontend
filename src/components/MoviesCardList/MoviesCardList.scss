@@ -36,12 +36,18 @@
 
     @media screen and (max-width: 767px) {
       margin: 49px 0 159px;
-      min-width: 10px;
+      min-width: 200px;
     }
 
     &:hover {
       opacity: 0.8;
       transition: 0.5s;
     }
+  }
+
+  &__error-message{
+    text-align: center;
+    align-self: center;
+    max-width: 60%;
   }
 }

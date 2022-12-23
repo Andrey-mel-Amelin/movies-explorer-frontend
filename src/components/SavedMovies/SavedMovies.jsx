@@ -1,41 +1,30 @@
-import { useState } from 'react';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 
-function SavedMovies({ onMovieLike, savedMovies, location }) {
-  const [savedFilterMovies, setSavedFilterMovies] = useState([]);
-  const [isSavedSearch, setIsSavedSearch] = useState(false);
-
-  function handleSearchSavedFilms(value, checkbox) {
-    setIsSavedSearch(true);
-
-    const savedSearch = savedMovies.filter((i) => i.nameRU.toLowerCase().includes(value.toLowerCase()));
-
-    const savedShortSearch = savedMovies.filter(
-      (i) => i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= 40
-    );
-
-    if (savedSearch || savedShortSearch) {
-      if (checkbox && savedShortSearch) {
-        setSavedFilterMovies([...savedShortSearch]);
-      } else {
-        setSavedFilterMovies([...savedSearch]);
-      }
-    }
-  }
-
+function SavedMovies({
+  showMovies,
+  savedMovies,
+  savedFilterMovies,
+  resStatus,
+  isSavedSearch,
+  location,
+  formValues,
+  onSearchSavedFilms,
+  onMovieLike,
+}) {
   return (
     <section className="saved-movies">
-      <SearchForm onSearchSavedFilms={handleSearchSavedFilms} location={location} />
+      <SearchForm formValues={formValues} onSearchSavedFilms={onSearchSavedFilms} location={location} />
       {!savedMovies.length
-        ? ''
-        : !savedFilterMovies.length && isSavedSearch && <p className="movies__error-message">Ничего не найдено.</p>}
+        ? <p className="saved-movies__error-message">Нет сохраненных фильмов.</p>
+        : !savedFilterMovies.length && isSavedSearch && <p className="saved-movies__error-message">Ничего не найдено.</p>}
       <MoviesCardList
-        isSavedSearch={isSavedSearch}
-        savedFilterMovies={savedFilterMovies}
+        showMovies={showMovies}
         savedMovies={savedMovies}
-        onMovieLike={onMovieLike}
+        savedFilterMovies={savedFilterMovies}
+        resStatus={resStatus}
         location={location}
+        onMovieLike={onMovieLike}
       />
     </section>
   );

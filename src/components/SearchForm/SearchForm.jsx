@@ -1,16 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-function SearchForm({ onSearchSavedFilms, location, onSearchFilms }) {
+function SearchForm({ formValues, onSearchSavedFilms, location, onSearchFilms }) {
   const [isInvalid, setInvalid] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
-  const [searchCheckbox, setCheckbox] = useState(false);
-
-  useEffect(() => {
-    if (!localStorage.getItem('search-value') && !localStorage.getItem('search-checkbox')) return;
-    if (location.pathname === '/saved-movies') return;
-    setSearchValue(JSON.parse(localStorage.getItem('search-value')));
-    setCheckbox(JSON.parse(localStorage.getItem('search-checkbox')));
-  }, [location]);
+  const [searchValue, setSearchValue] = useState(formValues.value);
+  const [searchCheckbox, setCheckbox] = useState(formValues.checkbox);
 
   function handleValue(e) {
     setSearchValue(e.target.value);
@@ -23,16 +16,18 @@ function SearchForm({ onSearchSavedFilms, location, onSearchFilms }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (e.target[0].value === '') {
+    // учитывать пустую строку поиска только на вкладке фильмов
+    if (e.target[0].value === '' && location.pathname === '/movies') {
       setInvalid(true);
       return;
     }
 
     setInvalid(false);
 
+    localStorage.setItem('search-value', JSON.stringify(searchValue));
+    localStorage.setItem('search-checkbox', JSON.stringify(searchCheckbox));
+    
     if (location.pathname === '/movies') {
-      localStorage.setItem('search-value', JSON.stringify(searchValue));
-      localStorage.setItem('search-checkbox', JSON.stringify(searchCheckbox));
       onSearchFilms(searchValue, searchCheckbox);
     } else {
       onSearchSavedFilms(searchValue, searchCheckbox);

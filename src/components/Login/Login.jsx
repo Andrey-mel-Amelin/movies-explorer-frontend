@@ -3,10 +3,12 @@ import { useFormWithValidation } from '../../hooks/validationForms';
 
 function Login({ resStatus, onLogin }) {
   const { values, handleChange, resetForm, errors, isValid } = useFormWithValidation();
-
+  
   function handleSubmit(e) {
     e.preventDefault();
     const { email, password } = values;
+    if (!isValid) return;
+
     onLogin(email, password);
     resetForm();
   }

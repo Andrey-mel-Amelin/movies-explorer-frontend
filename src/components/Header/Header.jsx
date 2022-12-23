@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 import Navigation from '../Navigation/Navigation';
+import { authPath } from '../../constants/constants';
 
 function Header({ loggedIn, menuActivity, onMenuToggle, location }) {
-  const authPath = ['/signup', '/signin'];
-
   return (
     <header className={`header ${authPath.includes(location.pathname) ? 'header_for_auth' : ''}`}>
       <Link to="/" className="logo" />

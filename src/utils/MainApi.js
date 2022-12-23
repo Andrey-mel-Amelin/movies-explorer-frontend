@@ -12,7 +12,7 @@ function request({ url, method = 'POST', data }) {
     ...(!!data && { body: JSON.stringify(data) }),
   }).then((res) => {
     if (!res.ok) {
-      return Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject({ error: `Ошибка: ${res.status}`, message: res });
     }
     return res.json();
   });
