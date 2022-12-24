@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import * as mainApi from '../../utils/MainApi';
 import { api } from '../../utils/MoviesApi';
-import { authPath, valueLocal, checkboxLocal, allowedPath } from '../../constants/constants';
+import { authPath, valueLocal, checkboxLocal, allowedPath, duration } from '../../constants/constants';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 import Header from '../Header/Header';
@@ -64,10 +64,13 @@ function App() {
         .catch((err) => {
           console.log(err);
           setLoggedIn(false);
+          if (err.message.status === 401) {
+            handleLogout();
+          }
         });
     }
     getContent();
-  }, [location, resMessage]);
+  }, []);
 
   // проверяем значения инпутов в локальном хранилище и подставляем в форму
   useEffect(() => {
@@ -151,7 +154,7 @@ function App() {
       .then((data) => {
         if (data) {
           // устанавливаем данные о пользователе
-          setCurrentUser(data.user);
+          setCurrentUser(data.userInfo);
           // переходим к фильмам
           history('/movies');
           setLoggedIn(true);
@@ -233,7 +236,7 @@ function App() {
         movieList.filter((i) => {
           if (checkbox) {
             // фильтр для короткометражек
-            return i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= 40;
+            return i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= duration;
           } else {
             // фильтра для фильмов
             return i.nameRU.toLowerCase().includes(value.toLowerCase());
@@ -283,7 +286,7 @@ function App() {
 
     // массив отфильтрованных короткометражных фильмов
     const savedShortSearch = savedMovies.filter(
-      (i) => i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= 40
+      (i) => i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= duration
     );
 
     if (savedSearch || savedShortSearch) {
@@ -424,7 +427,7 @@ function App() {
               path="*"
               element={
                 <ProtectedRoute redirectTo="/">
-                  <NotFound onBack={() => history(-1)} />
+                  <NotFound getBack={() => history(-1)} />
                 </ProtectedRoute>
               }
             />

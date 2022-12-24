@@ -1,6 +1,6 @@
 function InfoPopup({ isOpen, onClose, resStatus, resMessage }) {
   return (
-    <div className={`info-popup ${isOpen && 'info-popup_visible'}`} onClick={onClose}>
+    <div className={`info-popup ${isOpen ? 'info-popup_visible' : ''}`} onClick={onClose}>
       <div
         className="info-popup__container"
         onClick={(evt) => {
