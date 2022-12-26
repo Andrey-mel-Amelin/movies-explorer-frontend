@@ -8,16 +8,17 @@ function SavedMovies({
   resStatus,
   isSavedSearch,
   location,
-  formValues,
   onSearchSavedFilms,
   onMovieLike,
 }) {
   return (
     <section className="saved-movies">
-      <SearchForm formValues={formValues} onSearchSavedFilms={onSearchSavedFilms} location={location} />
-      {!savedMovies.length
-        ? <p className="saved-movies__error-message">Нет сохраненных фильмов.</p>
-        : !savedFilterMovies.length && isSavedSearch && <p className="saved-movies__error-message">Ничего не найдено.</p>}
+      <SearchForm onSearchSavedFilms={onSearchSavedFilms} location={location} />
+      {!savedMovies.length ? (
+        <p className="saved-movies__error-message">Нет сохраненных фильмов.</p>
+      ) : (
+        !savedFilterMovies.length && isSavedSearch && <p className="saved-movies__error-message">Ничего не найдено.</p>
+      )}
       <MoviesCardList
         showMovies={showMovies}
         savedMovies={savedMovies}

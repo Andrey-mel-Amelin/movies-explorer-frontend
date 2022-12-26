@@ -84,14 +84,6 @@
         cursor:not-allowed;
       }
     }
-
-    &_for_login {
-      margin-top: 179px;
-
-      @media screen and (max-width: 767px) {
-      margin-top: 266px;
-    }
-    }
   }
 
   &__text {

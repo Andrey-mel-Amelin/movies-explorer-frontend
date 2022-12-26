@@ -2,7 +2,17 @@ import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import * as mainApi from '../../utils/MainApi';
 import { api } from '../../utils/MoviesApi';
-import { authPath, valueLocal, checkboxLocal, allowedPath, duration } from '../../constants/constants';
+import {
+  authPath,
+  valueLocal,
+  checkboxLocal,
+  allowedPath,
+  duration,
+  moviesLocal,
+  valueShowMovieForDesktop,
+  valueShowMovieForMobile,
+  moviesPath,
+} from '../../constants/constants';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 import Header from '../Header/Header';
@@ -17,11 +27,11 @@ import InfoPopup from '../InfoPopup/InfoPopup';
 import Footer from '../Footer/Footer';
 
 function App() {
-  const location = useLocation(); // доступ к url
-  const history = useNavigate(); // доступ к перенаправлению по url
+  const location = useLocation(); // доступ к данным url
+  const navigate = useNavigate(); // доступ к перемещениям по url
 
-  const [currentUser, setCurrentUser] = useState({}); // данные пользователя
-  const [loggedIn, setLoggedIn] = useState(false); // авторизованный ли пользователь
+  const [currentUser, setCurrentUser] = useState({ _id: '', email: '', name: '' }); // данные пользователя
+  const [loggedIn, setLoggedIn] = useState(true); // авторизованный ли пользователь
 
   const [allMovieslist, setAllMoviesList] = useState([]); // весь список фильмов с movieApi
   const [filterMovies, setFilterMovies] = useState([]); // отфильтрованный список фильмов в movies
@@ -37,7 +47,7 @@ function App() {
   const [menuActivity, setMenuActivity] = useState(false); // меню
   const [isSavedSearch, setIsSavedSearch] = useState(false); // поиск в saved-movies
 
-  const [stepShowMovies, setStepShowMovies] = useState(7); // количество отображаемых фильмов
+  const [stepShowMovies, setStepShowMovies] = useState(valueShowMovieForDesktop); // количество отображаемых фильмов
 
   const [formValues, setFormValues] = useState({
     value: '',
@@ -47,23 +57,32 @@ function App() {
   // проверяем токен при первом рендере приложения
   // проверка наличия фильмов в локальном хранилище и добавление в стейт
   useEffect(() => {
-    if (localStorage.getItem(`movies`)) {
-      setAllMoviesList(JSON.parse(localStorage.getItem(`movies`)));
+    if (moviesLocal) {
+      setAllMoviesList(JSON.parse(moviesLocal));
     }
 
-    if (authPath.includes(location.pathname)) return;
+    // проверяем наличие значение для поиска в локальном хранилище и подставляем в форму
+    if (valueLocal || checkboxLocal) {
+      setFormValues({
+        value: JSON.parse(valueLocal),
+        checkbox: JSON.parse(checkboxLocal),
+      });
+    }
 
     // проверка токена, подстановка данных пользователя
     function getContent() {
       return mainApi
         .checkToken()
-        .then((info) => {
+        .then((data) => {
           setLoggedIn(true);
-          setCurrentUser(info);
+          // если ответ удачен используем данные о пользователе в контексте
+          setCurrentUser(data);
         })
         .catch((err) => {
           console.log(err);
           setLoggedIn(false);
+          setCurrentUser({ _id: '', email: '', name: '' });
+          // при невалидном jwt происходит автоматический логаут
           if (err.message.status === 401) {
             handleLogout();
           }
@@ -72,20 +91,20 @@ function App() {
     getContent();
   }, []);
 
-  // проверяем значения инпутов в локальном хранилище и подставляем в форму
+  // если стейт со всеми фильмами не пуст, есть значения в локальном хранилище для поиска и url movies то
+  // подставляем данные из локального хранилища в поиск и производим его
   useEffect(() => {
-    if (!localStorage.getItem('search-value') && !localStorage.getItem('search-checkbox')) return;
-    if (location.pathname === '/saved-movies') return;
-    setFormValues({
-      value: JSON.parse(localStorage.getItem('search-value')),
-      checkbox: JSON.parse(localStorage.getItem('search-checkbox')),
-    });
-  }, [location, filterMovies, savedFilterMovies]);
+    if ((!!valueLocal || !!checkboxLocal) && allMovieslist.length && location.pathname === '/movies') {
+      handleSearchFilms(JSON.parse(valueLocal), JSON.parse(checkboxLocal));
+    }
+  }, [location]);
 
   // загружаем сохраненные фильмы пользователя с сервера
   useEffect(() => {
+    // если url совпадает с регистрацией/входом ничего не выполнять
     if (authPath.includes(location.pathname)) return;
-    if (loggedIn && !savedMovies.length) {
+    // елси пользователь залогинен и массив сохраненных фильмов пуст выполняет запрос к нашему API
+    if (loggedIn && !savedMovies.length && moviesPath.includes(location.pathname)) {
       mainApi
         .getMovies()
         .then((movies) => {
@@ -93,7 +112,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [loggedIn, location]);
+  }, [loggedIn, location, savedMovies.length]);
 
   // изменение количества отображаемых фильмов на странице в зависимости от экрана
   // удаление прослушивателя при переходе за пределы /movies
@@ -101,7 +120,9 @@ function App() {
     if (location.pathname === '/movies') {
       window.addEventListener('resize', () => {
         setTimeout(() => {
-          window.screen.width <= 768 ? setStepShowMovies(5) : setStepShowMovies(7);
+          window.screen.width <= 768
+            ? setStepShowMovies(valueShowMovieForMobile)
+            : setStepShowMovies(valueShowMovieForDesktop);
         }, 3000);
       });
     } else {
@@ -109,7 +130,7 @@ function App() {
     }
   }, [location.pathname]);
 
-  // изменение отображаемого списка фильмов
+  // изменение отображаемого списка фильмов в зависимости от локации и поисков
   useEffect(() => {
     setShowMovies(
       location.pathname === '/movies'
@@ -119,13 +140,6 @@ function App() {
         : savedMovies
     );
   }, [filterMovies, savedMovies, isSavedSearch, savedFilterMovies, stepShowMovies, location.pathname]);
-
-  // проверка наличия раннее введенных значений в форме поиска и подстановка в функцию для поиска
-  useEffect(() => {
-    if (allMovieslist.length && valueLocal && checkboxLocal) {
-      handleSearchFilms(JSON.parse(valueLocal), JSON.parse(checkboxLocal));
-    }
-  }, [allMovieslist]);
 
   // регистрация
   function handleRegister(name, email, password) {
@@ -139,6 +153,7 @@ function App() {
         }
       })
       .catch((err) => {
+        setLoggedIn(false);
         setIsOpenAuthPopup(true);
         setResStatus(false);
         setResMessage(
@@ -148,22 +163,26 @@ function App() {
   }
 
   // авторизация
-  function handleLogin(name, email, password) {
+  function handleLogin(email, password) {
+    setLoggedIn(true);
     return mainApi
-      .login(name, email, password)
+      .login(email, password)
       .then((data) => {
         if (data) {
+          console.log(data)
           // устанавливаем данные о пользователе
           setCurrentUser(data.userInfo);
-          // переходим к фильмам
-          history('/movies');
           setLoggedIn(true);
           setIsOpenAuthPopup(true);
           setResStatus(true);
           setResMessage(data.message);
+          // переходим к movies
+          navigate('/movies');
         }
       })
       .catch((err) => {
+        setCurrentUser({ _id: '', email: '', name: '' });
+        setLoggedIn(false);
         setIsOpenAuthPopup(true);
         setResStatus(false);
         setResMessage(err === 'Ошибка: 401' ? 'Неправильный почта или пароль.' : 'Произошла ошибка запроса.');
@@ -192,10 +211,10 @@ function App() {
   function handleLogout() {
     return mainApi
       .logout()
-      .then((res) => {
+      .then(() => {
         // чистим все стейты
         setLoggedIn(false);
-        setCurrentUser({});
+        setCurrentUser({ _id: '', email: '', name: '' });
         setAllMoviesList([]);
         setFilterMovies([]);
         setSavedMovies([]);
@@ -207,13 +226,9 @@ function App() {
         });
         // очищаем локальное хранилище
         localStorage.clear();
-        // переходим на главную
-        history('/');
-        setIsOpenAuthPopup(true);
-        setResStatus(true);
-        setResMessage(res.message);
       })
       .catch(() => {
+        setLoggedIn(false);
         setIsOpenAuthPopup(true);
         setResStatus(false);
         setResMessage('Произошла ошибка запроса.');
@@ -223,6 +238,19 @@ function App() {
   // фильтрация всех фильмов по значениям из формы
   // если списка всех фильмов еще нет, получение их из movieApi
   function handleSearchFilms(value, checkbox) {
+    // указываем что это не поиск на странице сохраненных фильмов
+    setIsSavedSearch(false);
+
+    // функция установки значений из формы в локальное хранилище
+    function setItemLocalStorage(name, item) {
+      if (!item) return;
+      localStorage.setItem(`search-${name}`, JSON.stringify(item));
+    }
+
+    // подставляем значения в локальное хранилище
+    setItemLocalStorage('value', value);
+    setItemLocalStorage('checkbox', checkbox);
+
     // устанавливаем значения в форму до получения даныых из локального хранилища
     setFormValues({
       value: value,
@@ -231,14 +259,17 @@ function App() {
 
     function filter(movieList) {
       // изменяем количество добавляемых карточек с фильмами в зависимости от ширины экрана
-      window.screen.width <= 768 ? setStepShowMovies(5) : setStepShowMovies(7);
+      window.screen.width <= 768
+        ? setStepShowMovies(valueShowMovieForMobile)
+        : setStepShowMovies(valueShowMovieForDesktop);
+
       setFilterMovies(
         movieList.filter((i) => {
           if (checkbox) {
             // фильтр для короткометражек
             return i.nameRU.toLowerCase().includes(value.toLowerCase()) && i.duration <= duration;
           } else {
-            // фильтра для фильмов
+            // фильтр для фильмов
             return i.nameRU.toLowerCase().includes(value.toLowerCase());
           }
         })
@@ -255,7 +286,6 @@ function App() {
           localStorage.setItem('movies', JSON.stringify(movies));
           // фильтруем все фильмы
           filter(movies);
-
           setIsLoading(false);
           setResStatus(true);
         })
@@ -272,13 +302,13 @@ function App() {
 
   // фильтрация сохраненных фильмов по значениям из формы
   function handleSearchSavedFilms(value, checkbox) {
-    // устанавливаем значения в форму до получения даныых из локального хранилища
+    // устанавливаем значения в форму до получения данных из локального хранилища
     setFormValues({
       value: value,
       checkbox: checkbox,
     });
 
-    // когда становится истинно показываем отфильтрованные фильмы в сохраненных
+    // указываем что это поиск на странице с сохраненными фильмами
     setIsSavedSearch(true);
 
     // массив отфильтрованных фильмов
@@ -303,7 +333,7 @@ function App() {
 
   // добавить/убрать фильм(лайк)
   function handleMovieLike(movie) {
-    // ищем фильм в сохраненных
+    // ищем фильм в массиве с сохраненными фильмами
     const savedMovie = savedMovies.find((i) => i.movieId === movie.id || movie.movieId);
 
     return mainApi
@@ -313,10 +343,10 @@ function App() {
           // если не сохранен, добавить в сохраненные
           setSavedMovies([reqMovie, ...savedMovies]);
         } else if (location.pathname === '/movies') {
-          // если сохранён и url совпадает то убрать лайк
+          // если сохранён и находимся в movies то убрать лайк
           setSavedMovies((state) => state.filter((c) => c.movieId !== movie.id));
         } else {
-          // если сохранен и url другой(/saved-movies) то удаляем фильм из сохраненных
+          // если сохранен и находимся в saved-movies то удаляем фильм из сохраненных
           setSavedMovies((state) => state.filter((c) => c.movieId !== movie.movieId));
         }
       })
@@ -335,19 +365,20 @@ function App() {
   // обработчик кнопки "Ещё"
   function handleButtonMore() {
     // в зависимости от ширины экрана прибавлять разное количество карточек с фильмами
-    const step = window.screen.width <= 768 ? 5 : 7;
+    const step = window.screen.width <= 768 ? valueShowMovieForMobile : valueShowMovieForDesktop;
+    // устанавливаем значение в стейт исходя из длинны массива показываемых фильмов плюс шаг
     setStepShowMovies(showMovies.length + step);
   }
 
   // ProtectedRoute
   function ProtectedRoute({ children, redirectTo }) {
-    return authPath.includes(location.pathname) && !loggedIn ? ( // не вошёл -> показывать регистрацию/вход
+    return authPath.includes(location.pathname) && !currentUser._id ? ( // не вошёл -> показывать регистрацию/вход
       children
-    ) : !allowedPath.includes(location.pathname) && loggedIn ? ( // вошёл -> не показывать notfound
+    ) : !allowedPath.includes(location.pathname) && !!currentUser._id ? ( // вошёл -> не показывать notfound
       <Navigate to={redirectTo} />
-    ) : !authPath.includes(location.pathname) && loggedIn ? ( // вошёл -> не показывать регистрацию/вход
+    ) : !authPath.includes(location.pathname) && loggedIn ? ( // вошёл -> показывать все кроме регистрации/входа
       children
-    ) : !allowedPath.includes(location.pathname) && !loggedIn ? ( // не вошёл -> показывать notfound
+    ) : !allowedPath.includes(location.pathname) && !currentUser._id ? ( // не вошёл -> показывать notfound
       children
     ) : (
       <Navigate to={redirectTo} />
@@ -427,7 +458,7 @@ function App() {
               path="*"
               element={
                 <ProtectedRoute redirectTo="/">
-                  <NotFound getBack={() => history(-1)} />
+                  <NotFound />
                 </ProtectedRoute>
               }
             />

@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 function SearchForm({ formValues, onSearchSavedFilms, location, onSearchFilms }) {
   const [isInvalid, setInvalid] = useState(false);
-  const [searchValue, setSearchValue] = useState(formValues.value);
-  const [searchCheckbox, setCheckbox] = useState(formValues.checkbox);
+  const [searchValue, setSearchValue] = useState(location.pathname === '/movies' ? formValues.value : '');
+  const [searchCheckbox, setCheckbox] = useState(location.pathname === '/movies' ? formValues.checkbox : false);
 
   function handleValue(e) {
     setSearchValue(e.target.value);
@@ -24,9 +24,6 @@ function SearchForm({ formValues, onSearchSavedFilms, location, onSearchFilms })
 
     setInvalid(false);
 
-    localStorage.setItem('search-value', JSON.stringify(searchValue));
-    localStorage.setItem('search-checkbox', JSON.stringify(searchCheckbox));
-    
     if (location.pathname === '/movies') {
       onSearchFilms(searchValue, searchCheckbox);
     } else {

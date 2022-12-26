@@ -2,6 +2,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 
 function Movies({
+  formValues,
   allMovieslist,
   showMovies,
   filterMovies,
@@ -9,7 +10,6 @@ function Movies({
   resStatus,
   isLoading,
   location,
-  formValues,
   onSearchFilms,
   onMovieLike,
   onButtonMore,

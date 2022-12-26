@@ -46,7 +46,7 @@ function Login({ resStatus, onLogin }) {
         {resStatus === false && 'Произошла ошибка запроса авторизации.'}
       </span>
       <button
-        className={`form__button form__button_for_login ${!isValid ? 'form__button_type_error' : ''}`}
+        className={`form__button ${!isValid ? 'form__button_type_error' : ''}`}
         disabled={!isValid}
         type="submit"
       >
