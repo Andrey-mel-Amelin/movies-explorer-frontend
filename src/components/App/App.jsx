@@ -94,10 +94,10 @@ function App() {
   // если стейт со всеми фильмами не пуст, есть значения в локальном хранилище для поиска и url movies то
   // подставляем данные из локального хранилища в поиск и производим его
   useEffect(() => {
-    if ((!!valueLocal || !!checkboxLocal) && allMovieslist.length && location.pathname === '/movies') {
-      handleSearchFilms(JSON.parse(valueLocal), JSON.parse(checkboxLocal));
+    if (formValues.value && allMovieslist.length && location.pathname === '/movies') {
+      handleSearchFilms(formValues.value, formValues.checkbox);
     }
-  }, [location]);
+  }, [location, allMovieslist]);
 
   // загружаем сохраненные фильмы пользователя с сервера
   useEffect(() => {
@@ -169,7 +169,7 @@ function App() {
       .login(email, password)
       .then((data) => {
         if (data) {
-          console.log(data)
+          console.log(data);
           // устанавливаем данные о пользователе
           setCurrentUser(data.userInfo);
           setLoggedIn(true);
@@ -243,11 +243,9 @@ function App() {
 
     // функция установки значений из формы в локальное хранилище
     function setItemLocalStorage(name, item) {
-      if (!item) return;
+      if (item === null || item === undefined) return;
       localStorage.setItem(`search-${name}`, JSON.stringify(item));
     }
-
-    // подставляем значения в локальное хранилище
     setItemLocalStorage('value', value);
     setItemLocalStorage('checkbox', checkbox);
 
@@ -302,12 +300,6 @@ function App() {
 
   // фильтрация сохраненных фильмов по значениям из формы
   function handleSearchSavedFilms(value, checkbox) {
-    // устанавливаем значения в форму до получения данных из локального хранилища
-    setFormValues({
-      value: value,
-      checkbox: checkbox,
-    });
-
     // указываем что это поиск на странице с сохраненными фильмами
     setIsSavedSearch(true);
 
