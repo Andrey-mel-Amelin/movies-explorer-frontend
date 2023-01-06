@@ -1,9 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function SearchForm({ formValues, onSearchSavedFilms, location, onSearchFilms }) {
   const [isInvalid, setInvalid] = useState(false);
   const [searchValue, setSearchValue] = useState(location.pathname === '/movies' ? formValues.value : '');
   const [searchCheckbox, setCheckbox] = useState(location.pathname === '/movies' ? formValues.checkbox : false);
+
+  useEffect(() => {
+    if (location.pathname === '/movies') {
+      setSearchValue(formValues.value);
+      setCheckbox(formValues.checkbox);
+    }
+  }, [location, formValues]); // опять та же ебала
 
   function handleValue(e) {
     setSearchValue(e.target.value);

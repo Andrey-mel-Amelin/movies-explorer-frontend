@@ -2,19 +2,18 @@ import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/validationForms';
 
 function Login({ resStatus, onLogin }) {
-  const { values, handleChange, resetForm, errors, isValid } = useFormWithValidation();
-  
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
+
   function handleSubmit(e) {
     e.preventDefault();
     const { email, password } = values;
     if (!isValid) return;
 
     onLogin(email, password);
-    resetForm();
   }
 
   return (
-    <form onSubmit={handleSubmit} className="form">
+    <form onSubmit={handleSubmit} noValidate className="form">
       <label className="form__label">
         E-mail
         <input
@@ -45,11 +44,7 @@ function Login({ resStatus, onLogin }) {
       <span className="form__text-error form__text-error_type_submit">
         {resStatus === false && 'Произошла ошибка запроса авторизации.'}
       </span>
-      <button
-        className={`form__button ${!isValid ? 'form__button_type_error' : ''}`}
-        disabled={!isValid}
-        type="submit"
-      >
+      <button className={`form__button ${!isValid ? 'form__button_type_error' : ''}`} disabled={!isValid} type="submit">
         Войти
       </button>
       <p className="form__text">

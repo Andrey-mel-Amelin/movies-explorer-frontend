@@ -6,7 +6,6 @@ import {
   authPath,
   valueLocal,
   checkboxLocal,
-  allowedPath,
   duration,
   moviesLocal,
   valueShowMovieForDesktop,
@@ -14,6 +13,7 @@ import {
   moviesPath,
 } from '../../constants/constants';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useFormWithValidation } from '../../hooks/validationForms';
 
 import Header from '../Header/Header';
 import Main from '../Main/Main';
@@ -53,6 +53,7 @@ function App() {
     value: '',
     checkbox: '',
   }); // значения инпутов из формы
+  const { resetForm } = useFormWithValidation();
 
   // проверяем токен при первом рендере приложения
   // проверка наличия фильмов в локальном хранилище и добавление в стейт
@@ -147,6 +148,8 @@ function App() {
       .register(name, email, password)
       .then((data) => {
         if (data) {
+          // очищаем поля формы
+          resetForm();
           // если есть ответ сразу входим
           handleLogin(email, password);
           setLoggedIn(true);
@@ -157,7 +160,7 @@ function App() {
         setIsOpenAuthPopup(true);
         setResStatus(false);
         setResMessage(
-          err === 'Ошибка: 409' ? 'Пользователь с таким email уже существует.' : 'Произошла ошибка запроса.'
+          err.message.status === 409 ? 'Пользователь с таким email уже существует.' : 'Произошла ошибка запроса.'
         );
       });
   }
@@ -169,7 +172,8 @@ function App() {
       .login(email, password)
       .then((data) => {
         if (data) {
-          console.log(data);
+          // очищаем поля формы
+          resetForm();
           // устанавливаем данные о пользователе
           setCurrentUser(data.userInfo);
           setLoggedIn(true);
@@ -185,7 +189,7 @@ function App() {
         setLoggedIn(false);
         setIsOpenAuthPopup(true);
         setResStatus(false);
-        setResMessage(err === 'Ошибка: 401' ? 'Неправильный почта или пароль.' : 'Произошла ошибка запроса.');
+        setResMessage(err.message.status === 401 ? 'Неправильные почта или пароль.' : 'Произошла ошибка запроса.');
       });
   }
 
@@ -362,21 +366,6 @@ function App() {
     setStepShowMovies(showMovies.length + step);
   }
 
-  // ProtectedRoute
-  function ProtectedRoute({ children, redirectTo }) {
-    return authPath.includes(location.pathname) && !currentUser._id ? ( // не вошёл -> показывать регистрацию/вход
-      children
-    ) : !allowedPath.includes(location.pathname) && !!currentUser._id ? ( // вошёл -> не показывать notfound
-      <Navigate to={redirectTo} />
-    ) : !authPath.includes(location.pathname) && loggedIn ? ( // вошёл -> показывать все кроме регистрации/входа
-      children
-    ) : !allowedPath.includes(location.pathname) && !currentUser._id ? ( // не вошёл -> показывать notfound
-      children
-    ) : (
-      <Navigate to={redirectTo} />
-    );
-  }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
@@ -387,7 +376,7 @@ function App() {
             <Route
               path="/movies"
               element={
-                <ProtectedRoute redirectTo="/">
+                loggedIn ? (
                   <Movies
                     allMovieslist={allMovieslist}
                     showMovies={showMovies}
@@ -401,13 +390,15 @@ function App() {
                     onMovieLike={handleMovieLike}
                     onButtonMore={handleButtonMore}
                   />
-                </ProtectedRoute>
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
             <Route
               path="/saved-movies"
               element={
-                <ProtectedRoute redirectTo="/">
+                loggedIn ? (
                   <SavedMovies
                     showMovies={showMovies}
                     savedMovies={savedMovies}
@@ -419,41 +410,32 @@ function App() {
                     onSearchSavedFilms={handleSearchSavedFilms}
                     onMovieLike={handleMovieLike}
                   />
-                </ProtectedRoute>
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
             <Route
               path="/profile"
               element={
-                <ProtectedRoute redirectTo="/">
-                  <Profile onUpdateUser={handleUpdateUser} onLogout={handleLogout} />
-                </ProtectedRoute>
+                loggedIn ? <Profile onUpdateUser={handleUpdateUser} onLogout={handleLogout} /> : <Navigate to="/" />
               }
             />
             <Route
               path="/signup"
               element={
-                <ProtectedRoute redirectTo="/">
+                !currentUser._id ? (
                   <Register resStatusOk={resStatus} onRegister={handleRegister} />
-                </ProtectedRoute>
+                ) : (
+                  <Navigate to="/" />
+                )
               }
             />
             <Route
               path="/signin"
-              element={
-                <ProtectedRoute redirectTo="/">
-                  <Login resStatusOk={resStatus} onLogin={handleLogin} />
-                </ProtectedRoute>
-              }
+              element={!currentUser._id ? <Login resStatusOk={resStatus} onLogin={handleLogin} /> : <Navigate to="/" />}
             />
-            <Route
-              path="*"
-              element={
-                <ProtectedRoute redirectTo="/">
-                  <NotFound />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="*" element={<NotFound goBack={() => navigate(-1)} />} />
           </Routes>
         </main>
         <InfoPopup

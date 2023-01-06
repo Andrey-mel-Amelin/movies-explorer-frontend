@@ -1,4 +1,3 @@
-export const allowedPath = ['/', '/movies', '/saved-movies', '/signup', '/signin', '/profile']; // разрешённые url
 export const notFooterPaths = ['/', '/movies', '/saved-movies']; // url где не нужно использовать футер
 export const authPath = ['/signin', '/signup']; // url для регистрации/логина
 export const moviesPath = ['/movies', '/saved-movies'];

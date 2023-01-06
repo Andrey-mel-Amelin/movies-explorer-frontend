@@ -2,14 +2,13 @@ import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/validationForms';
 
 function Register({ resStatus, onRegister }) {
-  const { values, handleChange, resetForm, errors, isValid } = useFormWithValidation();
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
     const { name, email, password } = values;
     if (!isValid) return;
     onRegister(name, email, password);
-    resetForm();
   }
 
   return (
