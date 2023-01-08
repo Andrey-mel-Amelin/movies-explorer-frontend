@@ -4,14 +4,12 @@
   border-bottom: 1px solid rgba(232, 232, 232, 1);
   margin-bottom: 10px;
   display: grid;
-  grid-template: repeat(2, min-content) / calc(100% - 80px);
-  gap: 31px 0;
-  grid-template-areas: 'input submit' 'checkbox checkbox';
+  grid-template: repeat(3, min-content) / calc(100% - 80px);
+  grid-template-areas: 'input submit' 'error error' 'checkbox checkbox';
 
   @media screen and(max-width: 767px) {
     margin: 0 14px;
     padding: 81px 0 43px;
-    gap: 44px 0;
   }
 
   &__input {
@@ -53,6 +51,7 @@
   }
 
   &__label {
+    margin-top: 16px;
     z-index: -1;
     min-height: 20px;
     min-width: 156px;
@@ -64,7 +63,7 @@
     position: relative;
 
     @media screen and(max-width: 767px) {
-      min-width: 148px
+      min-width: 148px;
     }
   }
 
@@ -77,21 +76,27 @@
     &::before {
       cursor: pointer;
       position: absolute;
-      background-color: rgba(43, 224, 128, 1);
+      background-color: rgba(235, 235, 235, 1);
       border-radius: 20px;
       content: '';
       min-width: 36px;
       min-height: 20px;
     }
 
+    &:checked {
+      &::before {
+        background-color: rgba(43, 224, 128, 1);
+      }
+    }
+
     &::after {
       cursor: pointer;
       position: absolute;
-      background-color: #ffffff;
+      background-color: rgba(245, 245, 245, 1);
       box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.08);
       border-radius: 50%;
       top: 2px;
-      left: 18px;
+      left: 2px;
       content: '';
       min-width: 16px;
       min-height: 16px;
@@ -100,8 +105,9 @@
 
     &:checked {
       &::after {
+        background-color: #ffffff;
         transition: 0.2s;
-        left: 2px;
+        left: 18px;
       }
     }
   }
@@ -113,5 +119,14 @@
     @media screen and(max-width: 767px) {
       font-size: 11px;
     }
+  }
+
+  &__error {
+    min-height: 12px;
+    margin: 5px 0 0 22px;
+    grid-area: error;
+    color: rgba(255, 64, 98, 1);
+    font-size: 10px;
+    line-height: 12px;
   }
 }

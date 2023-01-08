@@ -2,14 +2,17 @@
   background-color: rgba(249, 249, 249, 1);
   padding: 6px 6px 6px 22px;
   display: grid;
-  grid-template: repeat(3, min-content) / 1fr 220px;
-  grid-template-areas: 'title image' 'duration image' 'button image';
+  min-height: 122px;
+  grid-template: repeat(3, 1fr) / 1fr 220px;
+  grid-template-areas: 'title link' 'duration link' 'button link';
+  gap: 0 20px;
 
   @media screen and(max-width: 767px) {
     padding: 0 0 14px;
     min-width: 300px;
+    gap: 0;
     grid-template: repeat(3, min-content) / repeat(2, min-content);
-    grid-template-areas: 'image image' 'title button' 'duration .';
+    grid-template-areas: 'link link' 'title button' 'duration .';
   }
 
   &__title {
@@ -64,6 +67,12 @@
     &:hover {
       transition: 0.5s;
       opacity: 0.8;
+      transform: scale(1.2);
+    }
+
+    &:active {
+      transition: .2s;
+      transform: scale(0.9);
     }
 
     &_active {
@@ -77,10 +86,31 @@
   }
 
   &__image {
-    grid-area: image;
+    object-fit: contain;
+    max-height: 122px;
+    max-width: 100%;
 
     @media screen and(max-width: 767px) {
       min-width: 300px;
+    }
+  }
+
+  &__link {
+    display: flex;
+    justify-self: center;
+    grid-area: link;
+    transition: 0.5s;
+
+    @media screen and(min-width: 769px) {
+      &:hover {
+        transition: 0.5s;
+        transform: scale(1.05);
+      }
+
+      &:active {
+        transition: 0.1s;
+        transform: scale(0.95);
+      }
     }
   }
 }

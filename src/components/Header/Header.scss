@@ -31,16 +31,13 @@
 
   &_for_auth {
     margin: 70px auto 40px;
-    max-width: 396px;
+    min-width: 396px;
 
-    @media screen and (max-width: 769px) {
-      margin: 232px auto 40px;
-    }
-
-    @media screen and (max-width: 769px) {
+    @media screen and (max-width: 767px) {
       margin: 56px auto 81px;
       display: flex;
       flex-direction: column;
+      min-width: 260px;
     }
   }
 

@@ -1,7 +1,9 @@
 import { NavLink } from 'react-router-dom';
+import { authPath } from '../../constants/constants';
 
 function Navigation({ location, menuActivity }) {
   return (
+    !authPath.includes(location.pathname) && 
     <>
       {window.screen.width > 768 ? (
         <div className="navigation">

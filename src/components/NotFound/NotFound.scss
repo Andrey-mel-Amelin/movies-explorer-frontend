@@ -1,5 +1,14 @@
 .not-found {
+  position: absolute;
+  background-color: white;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   min-height: 100vh;
+  min-width: 100vh;
+  display: flex;
   display: grid;
   grid-template-rows: 59.2vh min-content 1fr;
   grid-template-areas: 'title' 'text' 'back';

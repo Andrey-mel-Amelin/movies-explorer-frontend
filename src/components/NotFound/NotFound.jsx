@@ -1,15 +1,23 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function NotFound() {
-  const navigate = useNavigate();
-
+function NotFound({ goBack }) {
+  const currentUser = useContext(CurrentUserContext);
+  
   return (
     <section className="not-found">
       <h2 className="not-found__title">404</h2>
       <p className="not-found__text">Страница не найдена</p>
-      <Link className="not-found__back" to={navigate(-1)}>
-        Назад
-      </Link>
+      {!!currentUser._id ? (
+        <Link className="not-found__back" onClick={goBack}>
+          Назад
+        </Link>
+      ) : (
+        <Link className="not-found__back" to='.'>
+          Назад
+        </Link>
+      )}
     </section>
   );
 }

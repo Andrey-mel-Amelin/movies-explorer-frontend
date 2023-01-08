@@ -14,6 +14,7 @@
   }
 
   &__title {
+    text-align: center;
     margin: 0;
     font-weight: 500;
     font-size: 24px;
@@ -33,26 +34,27 @@
 
     @media screen and(max-width: 769px) {
       min-width: 260px;
-      margin: 81px 0 16px;
+      margin: 81px 30px 16px;
     }
   }
 
   &__label {
     min-width: 100%;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template: repeat(2, 1fr) / repeat(2, 1fr);
+    grid-template-areas: 'label input' 'error error';
     margin: 0;
+    grid-area: label;
     font-weight: 500;
     font-size: 11px;
     line-height: 13px;
 
     &:first-of-type {
       border-bottom: 1px solid rgba(232, 232, 232, 1);
-      padding-bottom: 16px;
     }
 
     &:last-of-type {
-      padding-top: 16px;
+      padding-top: 24px;
       margin-bottom: 220px;
 
       @media screen and(max-width: 769px) {
@@ -66,10 +68,12 @@
   }
 
   &__input {
+    grid-area: input;
     border: 0;
     display: flex;
     text-align: end;
-    min-width: 122px;
+    min-width: 100%;
+    padding: 0;
   }
 
   &__button {
@@ -99,6 +103,35 @@
       @media screen and(max-width: 767px) {
         margin-top: 378px;
       }
+    }
+
+    &_type_error {
+      color:rgba(255, 64, 98, 1);
+
+      &:hover {
+        opacity: 1;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &__text-error {
+    grid-area: error;
+    color: rgba(255, 64, 98, 1);
+    font-size: 10px;
+    line-height: 12px;
+    min-height: 12px;
+    margin: 5px 0;
+    justify-self: center;
+    text-align: center;
+
+    @media screen and(max-width: 767px) {
+        min-height: 24px;
+      }
+
+    &_type_submit {
+      align-self: center;
+      font-size: 14px;
     }
   }
 }
