@@ -10,7 +10,7 @@ function SearchForm({ formValues, onSearchSavedFilms, location, onSearchFilms })
       setSearchValue(formValues.value);
       setCheckbox(formValues.checkbox);
     }
-  }, [location, formValues]); // опять та же ебала
+  }, [location, formValues]);
 
   function handleValue(e) {
     setSearchValue(e.target.value);
