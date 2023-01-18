@@ -6,7 +6,7 @@ function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__link"
-            href="https://andrey-mel-amelin.github.io/how-to-learn/"
+            href="https://github.com/Andrey-mel-Amelin/how-to-learn"
             target="_blank"
             rel="noreferrer"
           >
@@ -17,7 +17,7 @@ function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__link"
-            href="https://andrey-mel-amelin.github.io/russian-travel/"
+            href="https://github.com/Andrey-mel-Amelin/russian-travel"
             target="_blank"
             rel="noreferrer"
           >
@@ -28,7 +28,7 @@ function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__link"
-            href="https://github.com/Andrey-mel-Amelin/react-mesto-auth"
+            href="https://github.com/Andrey-mel-Amelin/react-mesto-api-full"
             target="_blank"
             rel="noreferrer"
           >
