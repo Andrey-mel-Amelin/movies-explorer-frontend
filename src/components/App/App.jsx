@@ -369,7 +369,7 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
-        <Header loggedIn={loggedIn} menuActivity={menuActivity} onMenuToggle={handleMenuToggle} location={location} />
+        <Header menuActivity={menuActivity} onMenuToggle={handleMenuToggle} location={location} />
         <main className="content">
           <Routes>
             <Route path="/" element={<Main />} />

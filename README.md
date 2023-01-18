@@ -20,6 +20,6 @@ ___
 ___
 ## **Для локального запуска приложения:**
 * В файле utils/MainApi.js раскомментировать вторую строчку и закомментировать первую
-* Скачать и запустить **[серверную часть приложения:](https://github.com/Andrey-mel-Amelin/movies-explorer-api)**
+* Скачать и запустить **[серверную часть приложения](https://github.com/Andrey-mel-Amelin/movies-explorer-api)**
 ___
-### **[Ознакомиться с проектом вы можете здесь:](https://amelin.movies.nomoredomains.club/saved-movies)**
+### **[Ознакомиться с проектом вы можете здесь](https://amelin.movies.nomoredomains.club/saved-movies)**

@@ -1,15 +1,19 @@
 import { Link } from 'react-router-dom';
 import Navigation from '../Navigation/Navigation';
 import { authPath } from '../../constants/constants';
+import { useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Header({ loggedIn, menuActivity, onMenuToggle, location }) {
+function Header({ menuActivity, onMenuToggle, location }) {
+  const currentUser = useContext(CurrentUserContext);
+
   return (
     <header className={`header ${authPath.includes(location.pathname) ? 'header_for_auth' : ''}`}>
       <Link to="/" className="logo" />
       {location.pathname === '/signin' && <h2 className="header__title">Рады видеть!</h2>}
       {location.pathname === '/signup' && <h2 className="header__title">Добро пожаловать!</h2>}
       <>
-        {!loggedIn ? (
+        {!currentUser.name ? (
           <>
             {!authPath.includes(location.pathname) && (
               <div className="header__auth-container">
