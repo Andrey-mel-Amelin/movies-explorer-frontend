@@ -1,4 +1,7 @@
 .app {
+  display: flex;
+  justify-content: center;
+  
   .content {
     flex: 1;
   }

@@ -25,6 +25,7 @@ import Login from '../Login/Login';
 import NotFound from '../NotFound/NotFound';
 import InfoPopup from '../InfoPopup/InfoPopup';
 import Footer from '../Footer/Footer';
+import Preloader from '../Preloader/Preloader';
 
 function App() {
   const location = useLocation(); // доступ к данным url
@@ -42,6 +43,7 @@ function App() {
   const [isOpenAuthPopup, setIsOpenAuthPopup] = useState(false); // попап с ответом от сервера
   const [resMessage, setResMessage] = useState(''); // сообщение в попапе с ответом от сервера
   const [resStatus, setResStatus] = useState(true); // статус ответа от сервера
+  const [isLoadingMovies, setIsLoadingMovies] = useState(false); // состояние загрузки с сервера фильмов
   const [isLoading, setIsLoading] = useState(false); // состояние загрузки с сервера
 
   const [menuActivity, setMenuActivity] = useState(false); // меню
@@ -72,16 +74,18 @@ function App() {
 
     // проверка токена, подстановка данных пользователя
     function getContent() {
+      setIsLoading(true);
       return mainApi
         .checkToken()
         .then((data) => {
           setLoggedIn(true);
+          setIsLoading(false)
           // если ответ удачен используем данные о пользователе в контексте
           setCurrentUser(data);
         })
         .catch((err) => {
-          console.log(err);
           setLoggedIn(false);
+          setIsLoading(false);
           setCurrentUser({ _id: '', email: '', name: '' });
           // при невалидном jwt происходит автоматический логаут
           if (err.message.status === 401) {
@@ -279,7 +283,7 @@ function App() {
     }
 
     if (!allMovieslist.length) {
-      setIsLoading(true);
+      setIsLoadingMovies(true);
       api
         .getMovies()
         .then((movies) => {
@@ -288,7 +292,7 @@ function App() {
           localStorage.setItem('movies', JSON.stringify(movies));
           // фильтруем все фильмы
           filter(movies);
-          setIsLoading(false);
+          setIsLoadingMovies(false);
           setResStatus(true);
         })
         .catch(() => {
@@ -326,7 +330,7 @@ function App() {
       }
     }
   }
-
+  
   // добавить/убрать фильм(лайк)
   function handleMovieLike(movie) {
     // ищем фильм в массиве с сохраненными фильмами
@@ -369,84 +373,92 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app">
-        <Header menuActivity={menuActivity} onMenuToggle={handleMenuToggle} location={location} />
-        <main className="content">
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route
-              path="/movies"
-              element={
-                loggedIn ? (
-                  <Movies
-                    allMovieslist={allMovieslist}
-                    showMovies={showMovies}
-                    filterMovies={filterMovies}
-                    savedMovies={savedMovies}
-                    resStatus={resStatus}
-                    isLoading={isLoading}
-                    location={location}
-                    formValues={formValues}
-                    onSearchFilms={handleSearchFilms}
-                    onMovieLike={handleMovieLike}
-                    onButtonMore={handleButtonMore}
-                  />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
+        {isLoading ? (
+          <Preloader />
+        ) : (
+          <>
+            <Header menuActivity={menuActivity} onMenuToggle={handleMenuToggle} location={location} />
+            <main className="content">
+              <Routes>
+                <Route path="/" element={<Main />} />
+                <Route
+                  path="/movies"
+                  element={
+                    loggedIn ? (
+                      <Movies
+                        allMovieslist={allMovieslist}
+                        showMovies={showMovies}
+                        filterMovies={filterMovies}
+                        savedMovies={savedMovies}
+                        resStatus={resStatus}
+                        isLoadingMovies={isLoadingMovies}
+                        location={location}
+                        formValues={formValues}
+                        onSearchFilms={handleSearchFilms}
+                        onMovieLike={handleMovieLike}
+                        onButtonMore={handleButtonMore}
+                      />
+                    ) : (
+                      <Navigate to="/" />
+                    )
+                  }
+                />
+                <Route
+                  path="/saved-movies"
+                  element={
+                    loggedIn ? (
+                      <SavedMovies
+                        showMovies={showMovies}
+                        savedMovies={savedMovies}
+                        savedFilterMovies={savedFilterMovies}
+                        resStatus={resStatus}
+                        isSavedSearch={isSavedSearch}
+                        location={location}
+                        formValues={formValues}
+                        onSearchSavedFilms={handleSearchSavedFilms}
+                        onMovieLike={handleMovieLike}
+                      />
+                    ) : (
+                      <Navigate to="/" />
+                    )
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    loggedIn ? <Profile onUpdateUser={handleUpdateUser} onLogout={handleLogout} /> : <Navigate to="/" />
+                  }
+                />
+                <Route
+                  path="/signup"
+                  element={
+                    !currentUser._id ? (
+                      <Register resStatusOk={resStatus} onRegister={handleRegister} />
+                    ) : (
+                      <Navigate to="/" />
+                    )
+                  }
+                />
+                <Route
+                  path="/signin"
+                  element={
+                    !currentUser._id ? <Login resStatusOk={resStatus} onLogin={handleLogin} /> : <Navigate to="/" />
+                  }
+                />
+                <Route path="*" element={<NotFound goBack={() => navigate(-1)} />} />
+              </Routes>
+            </main>
+            <InfoPopup
+              isOpen={isOpenAuthPopup}
+              onClose={() => {
+                setIsOpenAuthPopup(false);
+              }}
+              resStatus={resStatus}
+              resMessage={resMessage}
             />
-            <Route
-              path="/saved-movies"
-              element={
-                loggedIn ? (
-                  <SavedMovies
-                    showMovies={showMovies}
-                    savedMovies={savedMovies}
-                    savedFilterMovies={savedFilterMovies}
-                    resStatus={resStatus}
-                    isSavedSearch={isSavedSearch}
-                    location={location}
-                    formValues={formValues}
-                    onSearchSavedFilms={handleSearchSavedFilms}
-                    onMovieLike={handleMovieLike}
-                  />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                loggedIn ? <Profile onUpdateUser={handleUpdateUser} onLogout={handleLogout} /> : <Navigate to="/" />
-              }
-            />
-            <Route
-              path="/signup"
-              element={
-                !currentUser._id ? (
-                  <Register resStatusOk={resStatus} onRegister={handleRegister} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/signin"
-              element={!currentUser._id ? <Login resStatusOk={resStatus} onLogin={handleLogin} /> : <Navigate to="/" />}
-            />
-            <Route path="*" element={<NotFound goBack={() => navigate(-1)} />} />
-          </Routes>
-        </main>
-        <InfoPopup
-          isOpen={isOpenAuthPopup}
-          onClose={() => {
-            setIsOpenAuthPopup(false);
-          }}
-          resStatus={resStatus}
-          resMessage={resMessage}
-        />
-        <Footer location={location} />
+            <Footer location={location} />
+          </>
+        )}
       </div>
     </CurrentUserContext.Provider>
   );

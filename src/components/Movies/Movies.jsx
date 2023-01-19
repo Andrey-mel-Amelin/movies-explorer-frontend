@@ -8,7 +8,7 @@ function Movies({
   filterMovies,
   savedMovies,
   resStatus,
-  isLoading,
+  isLoadingMovies,
   location,
   onSearchFilms,
   onMovieLike,
@@ -17,13 +17,15 @@ function Movies({
   return (
     <section className="movies">
       <SearchForm formValues={formValues} location={location} onSearchFilms={onSearchFilms} />
-      {!allMovieslist.length ? '' : !filterMovies.length && <p className="movies__error-message">Ничего не найдено.</p>}
+      <p className="movies__error-message">
+        {!allMovieslist.length ? 'После поиска здесь будет отображен список фильмов.' : !filterMovies.length && 'Ничего не найдено.'}
+      </p>
       <MoviesCardList
         showMovies={showMovies}
         onButtonMore={onButtonMore}
         onMovieLike={onMovieLike}
         resStatus={resStatus}
-        isLoading={isLoading}
+        isLoadingMovies={isLoadingMovies}
         filterMovies={filterMovies}
         savedMovies={savedMovies}
         location={location}

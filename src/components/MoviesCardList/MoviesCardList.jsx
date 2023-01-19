@@ -6,14 +6,14 @@ function MoviesCardList({
   savedMovies,
   filterMovies,
   resStatus,
-  isLoading,
+  isLoadingMovies,
   location,
   onMovieLike,
   onButtonMore,
 }) {
   return (
     <section className="movies-card-list">
-      {isLoading ? (
+      {isLoadingMovies ? (
         <Preloader />
       ) : !resStatus ? (
         <p className="movies-card-list__error-message">
