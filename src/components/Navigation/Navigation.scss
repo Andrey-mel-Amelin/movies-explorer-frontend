@@ -8,7 +8,7 @@
   position: relative;
   grid-area: main;
 
-  @media screen and(max-width: 768px) {
+  @media screen and(max-width: 1023px) {
     position: fixed;
     display: flex;
     justify-content: flex-end;
@@ -28,21 +28,13 @@
     }
   }
 
-  @media screen and(max-width: 767px) {
-    &_active {
-      z-index: 11;
-      transition: 0.1s;
-      opacity: 1;
-    }
-  }
-
   &__links {
     grid-area: movies;
     justify-self: center;
     display: flex;
     gap: 16px;
 
-    @media screen and(max-width: 768px) {
+    @media screen and(max-width: 1023px) {
       display: grid;
       gap: 22px;
       grid-template: 138px repeat(3, max-content) 45vh / 1fr;
@@ -53,11 +45,6 @@
       transform: translateX(100%);
       transition: 0.5s;
       justify-items: center;
-
-      &_active {
-        transition: 0.5s;
-        transform: translateX(0);
-      }
     }
 
     @media screen and(max-width: 767px) {
@@ -65,6 +52,11 @@
       grid-template: 129px repeat(3, max-content) 45vh / 1fr;
       grid-template-areas: '.' 'main' 'films' 'saved-films' 'profile';
       min-width: 320px;
+    }
+
+    &_active {
+      transition: 0.5s;
+      transform: translateX(0);
     }
   }
 
@@ -80,7 +72,7 @@
       opacity: 0.7;
     }
 
-    @media screen and(max-width: 768px) {
+    @media screen and(max-width: 1023px) {
       display: flex;
       min-height: 28px;
       gap: 3px;
@@ -114,7 +106,7 @@
       line-height: 16px;
       justify-self: flex-end;
 
-      @media screen and(max-width: 768px) {
+      @media screen and(max-width: 1023px) {
         display: grid;
         min-height: 35px;
         gap: 3px 17px;

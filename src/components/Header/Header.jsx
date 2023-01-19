@@ -30,7 +30,7 @@ function Header({ menuActivity, onMenuToggle, location }) {
               <>
                 <div
                   onClick={onMenuToggle}
-                  className={`header__menu-container ${menuActivity ? 'header__menu-container_type_mobile' : ''}`}
+                  className='header__menu-container'
                 >
                   <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`} />
                 </div>
@@ -43,7 +43,7 @@ function Header({ menuActivity, onMenuToggle, location }) {
             <Navigation location={location} menuActivity={menuActivity} />
             <div
               onClick={onMenuToggle}
-              className={`header__menu-container ${menuActivity ? 'header__menu-container_type_mobile' : ''}`}
+              className='header__menu-container'
             >
               <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`} />
             </div>

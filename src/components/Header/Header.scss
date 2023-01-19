@@ -21,7 +21,7 @@
   justify-content: flex-end;
   align-items: center;
 
-  @media screen and (max-width: 769px) {
+  @media screen and (max-width: 1023px) {
     margin: 18px 30px;
   }
 
@@ -47,7 +47,7 @@
     font-size: 24px;
     line-height: 29px;
 
-    @media screen and (max-width: 769px) {
+    @media screen and (max-width: 1023px) {
       margin: 50px 0 0;
     }
   }
@@ -107,7 +107,6 @@
   }
 
   &__menu-container {
-    margin-right: 8px;
     display: none;
     position: relative;
     min-width: 28px;
@@ -116,19 +115,13 @@
     justify-self: flex-end;
     z-index: 12;
 
-    @media screen and(max-width:768px) {
+    @media screen and(max-width:1023px) {
       display: flex;
-      min-width: 22px;
-      min-height: 21px;
-      margin-right: 9px;
     }
 
-    &_type_mobile {
-      margin-right: -6px;
-
-      @media screen and(max-width:767px) {
-        margin: -17px 4px 0 0;
-      }
+    @media screen and(max-width:767px) {
+      min-width: 22px;
+      min-height: 21px;
     }
   }
 

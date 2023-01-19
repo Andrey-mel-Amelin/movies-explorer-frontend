@@ -384,7 +384,7 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="app">
+      <div className={`app ${menuActivity ? 'app_none-scroll' : ''}`}>
         {isLoading ? (
           <Preloader />
         ) : (

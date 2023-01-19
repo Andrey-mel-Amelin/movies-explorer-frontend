@@ -5,7 +5,7 @@ function Navigation({ location, menuActivity }) {
   return (
     !authPath.includes(location.pathname) && 
     <>
-      {window.screen.width > 768 ? (
+      {window.screen.width > 1023 ? (
         <div className="navigation">
           <nav className="navigation__links">
             <NavLink to="/movies" className="navigation__link">
