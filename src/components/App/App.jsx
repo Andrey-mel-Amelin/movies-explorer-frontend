@@ -360,6 +360,7 @@ function App() {
         } else {
           // если сохранен и находимся в saved-movies то удаляем фильм из сохраненных
           setSavedMovies((state) => state.filter((c) => c.movieId !== movie.movieId));
+          setSavedFilterMovies((state) => state.filter((c) => c.movieId !== movie.movieId));
         }
       })
       .catch(() => {
