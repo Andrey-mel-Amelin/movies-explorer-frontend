@@ -37,7 +37,7 @@
     @media screen and(max-width: 1023px) {
       display: grid;
       gap: 22px;
-      grid-template: 138px repeat(3, max-content) 45vh / 1fr;
+      grid-template: 24vh repeat(3, max-content) 1fr / 1fr;
       grid-template-areas: '.' 'main' 'films' 'saved-films' 'profile';
       background-color: white;
       min-width: 520px;
@@ -49,7 +49,6 @@
 
     @media screen and(max-width: 767px) {
       gap: 16px;
-      grid-template: 129px repeat(3, max-content) 45vh / 1fr;
       grid-template-areas: '.' 'main' 'films' 'saved-films' 'profile';
       min-width: 320px;
     }
@@ -111,13 +110,9 @@
         min-height: 35px;
         gap: 3px 17px;
         grid-template-areas: 'profile logo' 'underline underline';
-        margin-bottom: 92px;
+        margin-bottom: 10%;
         justify-self: center;
         align-self: flex-end;
-      }
-
-      @media screen and(max-width: 767px) {
-        margin-bottom: 0;
       }
     }
   }
