@@ -13,12 +13,20 @@ function Movies({
   onSearchFilms,
   onMovieLike,
   onButtonMore,
+  checkboxFilter,
 }) {
   return (
     <section className="movies">
-      <SearchForm formValues={formValues} location={location} onSearchFilms={onSearchFilms} />
+      <SearchForm
+        checkboxFilter={checkboxFilter}
+        formValues={formValues}
+        location={location}
+        onSearchFilms={onSearchFilms}
+      />
       <p className="movies__error-message">
-        {!allMovieslist.length ? 'После поиска здесь будет отображен список фильмов.' : !filterMovies.length && 'Ничего не найдено.'}
+        {!allMovieslist.length
+          ? 'После поиска здесь будет отображен список фильмов.'
+          : !filterMovies.length && 'Ничего не найдено.'}
       </p>
       <MoviesCardList
         showMovies={showMovies}

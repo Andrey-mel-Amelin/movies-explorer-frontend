@@ -10,10 +10,11 @@ function SavedMovies({
   location,
   onSearchSavedFilms,
   onMovieLike,
+  checkboxFilter,
 }) {
   return (
     <section className="saved-movies">
-      <SearchForm onSearchSavedFilms={onSearchSavedFilms} location={location} />
+      <SearchForm checkboxFilter={checkboxFilter} onSearchSavedFilms={onSearchSavedFilms} location={location} />
       {!savedMovies.length ? (
         <p className="saved-movies__error-message">Нет сохраненных фильмов.</p>
       ) : (

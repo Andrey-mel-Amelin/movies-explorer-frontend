@@ -79,7 +79,7 @@ function App() {
         .checkToken()
         .then((data) => {
           setLoggedIn(true);
-          setIsLoading(false)
+          setIsLoading(false);
           // если ответ удачен используем данные о пользователе в контексте
           setCurrentUser(data);
         })
@@ -243,17 +243,18 @@ function App() {
       });
   }
 
+  // функция установки значений из формы в локальное хранилище
+  function setItemLocalStorage(name, item) {
+    if (item === null || item === undefined) return;
+    localStorage.setItem(`search-${name}`, JSON.stringify(item));
+  }
+
   // фильтрация всех фильмов по значениям из формы
   // если списка всех фильмов еще нет, получение их из movieApi
   function handleSearchFilms(value, checkbox) {
     // указываем что это не поиск на странице сохраненных фильмов
     setIsSavedSearch(false);
 
-    // функция установки значений из формы в локальное хранилище
-    function setItemLocalStorage(name, item) {
-      if (item === null || item === undefined) return;
-      localStorage.setItem(`search-${name}`, JSON.stringify(item));
-    }
     setItemLocalStorage('value', value);
     setItemLocalStorage('checkbox', checkbox);
 
@@ -330,7 +331,18 @@ function App() {
       }
     }
   }
-  
+
+  // функция живого чек-бокса
+  function checkboxFilter(value, checkbox) {
+    setItemLocalStorage('checkbox', checkbox);
+
+    if (location.pathname === '/movies') {
+      handleSearchFilms(value, checkbox);
+    } else {
+      handleSearchSavedFilms(value, checkbox);
+    }
+  }
+
   // добавить/убрать фильм(лайк)
   function handleMovieLike(movie) {
     // ищем фильм в массиве с сохраненными фильмами
@@ -397,6 +409,7 @@ function App() {
                         onSearchFilms={handleSearchFilms}
                         onMovieLike={handleMovieLike}
                         onButtonMore={handleButtonMore}
+                        checkboxFilter={checkboxFilter}
                       />
                     ) : (
                       <Navigate to="/" />
@@ -417,6 +430,7 @@ function App() {
                         formValues={formValues}
                         onSearchSavedFilms={handleSearchSavedFilms}
                         onMovieLike={handleMovieLike}
+                        checkboxFilter={checkboxFilter}
                       />
                     ) : (
                       <Navigate to="/" />
