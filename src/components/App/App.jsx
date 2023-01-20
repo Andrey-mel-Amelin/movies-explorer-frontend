@@ -258,6 +258,8 @@ function App() {
     setItemLocalStorage('value', value);
     setItemLocalStorage('checkbox', checkbox);
 
+    if (!value) return;
+
     // устанавливаем значения в форму до получения даныых из локального хранилища
     setFormValues({
       value: value,
