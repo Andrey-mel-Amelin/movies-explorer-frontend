@@ -29,6 +29,9 @@
   }
 
   &__links {
+    position: fixed;
+    top:0;
+    right: 0;
     grid-area: movies;
     justify-self: center;
     display: flex;
@@ -51,6 +54,16 @@
       gap: 16px;
       grid-template-areas: '.' 'main' 'films' 'saved-films' 'profile';
       min-width: 320px;
+    }
+
+    @media screen and(max-width: 319px) {
+      gap: 16px;
+      grid-template-areas: '.' 'main' 'films' 'saved-films' 'profile';
+      min-width: 100vw;
+    }
+
+    @media screen and(max-height: 500px) {
+      gap: 10px;
     }
 
     &_active {
@@ -108,11 +121,15 @@
       @media screen and(max-width: 1023px) {
         display: grid;
         min-height: 35px;
+        margin-top: 20vh;
         gap: 3px 17px;
         grid-template-areas: 'profile logo' 'underline underline';
-        margin-top: 80%;
         justify-self: center;
         align-self: flex-start;
+      }
+
+      @media screen and(max-height: 500px) {
+        margin-top: 0;
       }
     }
   }
