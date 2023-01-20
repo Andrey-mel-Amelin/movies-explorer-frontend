@@ -29,15 +29,15 @@
   }
 
   &__links {
-    position: fixed;
-    top:0;
-    right: 0;
     grid-area: movies;
     justify-self: center;
     display: flex;
     gap: 16px;
 
     @media screen and(max-width: 1023px) {
+      position: fixed;
+      top: 0;
+      right: 0;
       display: grid;
       gap: 22px;
       grid-template: 20vh repeat(3, max-content) 1fr / 1fr;
