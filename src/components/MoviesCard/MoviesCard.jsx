@@ -1,4 +1,4 @@
-function MoviesCard({ savedMovies, onMovieLike, movie, location }) {
+function MoviesCard({ savedMovies, onMovieLike, isBlockingButton, movie, location }) {
   return (
     <article className="movies-card">
       <h3 className="movies-card__title">{movie.nameRU}</h3>
@@ -8,6 +8,7 @@ function MoviesCard({ savedMovies, onMovieLike, movie, location }) {
           : `${movie.duration} м`}
       </span>
       <button
+        disabled={isBlockingButton}
         onClick={() => onMovieLike(movie)}
         className={`movies-card__button  ${
           savedMovies.find((i) => i.movieId === movie.id)

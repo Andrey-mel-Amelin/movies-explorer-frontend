@@ -2,6 +2,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
 
 function MoviesCardList({
+  isBlockingButton,
   showMovies,
   savedMovies,
   filterMovies,
@@ -28,6 +29,7 @@ function MoviesCardList({
               key={movie.id || movie._id}
               savedMovies={savedMovies}
               onMovieLike={onMovieLike}
+              isBlockingButton={isBlockingButton}
               location={location}
             />
           ))}

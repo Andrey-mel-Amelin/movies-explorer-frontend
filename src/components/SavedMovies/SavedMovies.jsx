@@ -2,6 +2,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 
 function SavedMovies({
+  isBlockingButton,
   showMovies,
   savedMovies,
   savedFilterMovies,
@@ -14,7 +15,12 @@ function SavedMovies({
 }) {
   return (
     <section className="saved-movies">
-      <SearchForm checkboxFilter={checkboxFilter} onSearchSavedFilms={onSearchSavedFilms} location={location} />
+      <SearchForm
+        isBlockingButton={isBlockingButton}
+        checkboxFilter={checkboxFilter}
+        onSearchSavedFilms={onSearchSavedFilms}
+        location={location}
+      />
       {!savedMovies.length ? (
         <p className="saved-movies__error-message">Нет сохраненных фильмов.</p>
       ) : (
@@ -27,6 +33,7 @@ function SavedMovies({
         resStatus={resStatus}
         location={location}
         onMovieLike={onMovieLike}
+        isBlockingButton={isBlockingButton}
       />
     </section>
   );

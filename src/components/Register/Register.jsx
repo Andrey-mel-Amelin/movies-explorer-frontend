@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/validationForms';
 
-function Register({ resStatus, onRegister }) {
+function Register({isBlockingButton, resStatus, onRegister }) {
   const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   function handleSubmit(e) {
@@ -58,7 +58,11 @@ function Register({ resStatus, onRegister }) {
       <span className="form__text-error form__text-error_type_submit">
         {resStatus === false && 'Произошла ошибка запроса регистрации.'}
       </span>
-      <button className={`form__button ${!isValid ? 'form__button_type_error' : ''}`} disabled={!isValid} type="submit">
+      <button
+        className={`form__button ${!isValid ? 'form__button_type_error' : ''}`}
+        disabled={!isValid && isBlockingButton}
+        type="submit"
+      >
         Зарегистрироваться
       </button>
       <p className="form__text">

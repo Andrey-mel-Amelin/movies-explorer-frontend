@@ -44,6 +44,7 @@ function App() {
   const [resMessage, setResMessage] = useState(''); // сообщение в попапе с ответом от сервера
   const [resStatus, setResStatus] = useState(true); // статус ответа от сервера
   const [isLoadingMovies, setIsLoadingMovies] = useState(false); // состояние загрузки с сервера фильмов
+  const [isBlockingButton, setIsBlockingButton] = useState(false); // блокировка кнопок
   const [isLoading, setIsLoading] = useState(false); // состояние загрузки с сервера
 
   const [menuActivity, setMenuActivity] = useState(false); // меню
@@ -148,9 +149,11 @@ function App() {
 
   // регистрация
   function handleRegister(name, email, password) {
+    setIsBlockingButton(true); // отключаем кнопку отправки форму
     return mainApi
       .register(name, email, password)
       .then((data) => {
+        setIsBlockingButton(false); // включаем кнопку отправки форму
         if (data) {
           // очищаем поля формы
           resetForm();
@@ -160,6 +163,7 @@ function App() {
         }
       })
       .catch((err) => {
+        setIsBlockingButton(false); // включаем кнопку отправки форму
         setLoggedIn(false);
         setIsOpenAuthPopup(true);
         setResStatus(false);
@@ -171,25 +175,25 @@ function App() {
 
   // авторизация
   function handleLogin(email, password) {
+    setIsBlockingButton(true); // отключаем кнопку отправки форму
     setLoggedIn(true);
     return mainApi
       .login(email, password)
       .then((data) => {
         if (data) {
-          // очищаем поля формы
-          resetForm();
-          // устанавливаем данные о пользователе
-          setCurrentUser(data.userInfo);
+          setIsBlockingButton(false); // включаем кнопку отправки форму
+          resetForm(); // очищаем поля формы
+          setCurrentUser(data.userInfo); // устанавливаем данные о пользователе
           setLoggedIn(true);
           setIsOpenAuthPopup(true);
           setResStatus(true);
           setResMessage(data.message);
-          // переходим к movies
-          navigate('/movies');
+          navigate('/movies'); // переходим к movies
         }
       })
       .catch((err) => {
-        setCurrentUser({ _id: '', email: '', name: '' });
+        setIsBlockingButton(false); // включаем кнопку отправки форму
+        setCurrentUser({ _id: '', email: '', name: '' }); // зануляем данные о пользователе
         setLoggedIn(false);
         setIsOpenAuthPopup(true);
         setResStatus(false);
@@ -199,16 +203,18 @@ function App() {
 
   // редактирование профиля
   function handleUpdateUser(name, email) {
+    setIsBlockingButton(true); // отключаем кнопку отправки форму
     return mainApi
       .updateUser(name, email)
       .then((data) => {
-        // устанавливаем новые данные о пользователе
-        setCurrentUser(data.user);
+        setIsBlockingButton(false); // включаем кнопку отправки форму
+        setCurrentUser(data.user); // устанавливаем новые данные о пользователе
         setIsOpenAuthPopup(true);
         setResStatus(true);
         setResMessage(data.message);
       })
       .catch((err) => {
+        setIsBlockingButton(false); // включаем кнопку отправки форму
         setIsOpenAuthPopup(true);
         setResStatus(false);
         setResMessage(err.message);
@@ -217,9 +223,11 @@ function App() {
 
   // выход из аккаунта
   function handleLogout() {
+    setIsBlockingButton(true); // отключаем кнопку отправки форму
     return mainApi
       .logout()
       .then(() => {
+        setIsBlockingButton(false); // включаем кнопку отправки форму
         // чистим все стейты
         setLoggedIn(false);
         setCurrentUser({ _id: '', email: '', name: '' });
@@ -232,10 +240,10 @@ function App() {
           value: '',
           checkbox: '',
         });
-        // очищаем локальное хранилище
-        localStorage.clear();
+        localStorage.clear(); // очищаем локальное хранилище
       })
       .catch(() => {
+        setIsBlockingButton(false); // включаем кнопку отправки форму
         setLoggedIn(false);
         setIsOpenAuthPopup(true);
         setResStatus(false);
@@ -286,19 +294,21 @@ function App() {
     }
 
     if (!allMovieslist.length) {
+      setIsBlockingButton(true); // отключаем кнопку отправки форму
+
       setIsLoadingMovies(true);
       api
         .getMovies()
         .then((movies) => {
-          // сохраняем все фильмы в стейте и локальном хранилище
-          setAllMoviesList(movies);
-          localStorage.setItem('movies', JSON.stringify(movies));
-          // фильтруем все фильмы
-          filter(movies);
+          setIsBlockingButton(false); // включаем кнопку отправки форму
+          setAllMoviesList(movies); // сохраняем все фильмы в стейте
+          localStorage.setItem('movies', JSON.stringify(movies)); // сохраняем все фильмы в локальном хранилище
+          filter(movies); // фильтруем все фильмы
           setIsLoadingMovies(false);
           setResStatus(true);
         })
         .catch(() => {
+          setIsBlockingButton(false); // включаем кнопку отправки форму
           setResStatus(false);
           setIsOpenAuthPopup(true);
           setResMessage('Произошла ошибка запроса.');
@@ -350,9 +360,13 @@ function App() {
     // ищем фильм в массиве с сохраненными фильмами
     const savedMovie = savedMovies.find((i) => i.movieId === movie.id || movie.movieId);
 
+    setIsBlockingButton(true); // отключаем кнопку лайка/удаления
+
     return mainApi
       .changeLikeMovieStatus(savedMovie && location.pathname === '/movies' ? savedMovie : movie, savedMovie)
       .then((reqMovie) => {
+        setIsBlockingButton(false); // включаем кнопку лайка/удаления
+
         if (!savedMovie) {
           // если не сохранен, добавить в сохраненные
           setSavedMovies([reqMovie, ...savedMovies]);
@@ -366,6 +380,7 @@ function App() {
         }
       })
       .catch(() => {
+        setIsBlockingButton(false); // включаем кнопку лайка/удаления
         setIsOpenAuthPopup(true);
         setResStatus(false);
         setResMessage('Произошла ошибка запроса.');
@@ -401,6 +416,7 @@ function App() {
                   element={
                     loggedIn ? (
                       <Movies
+                        isBlockingButton={isBlockingButton}
                         allMovieslist={allMovieslist}
                         showMovies={showMovies}
                         filterMovies={filterMovies}
@@ -424,6 +440,7 @@ function App() {
                   element={
                     loggedIn ? (
                       <SavedMovies
+                        isBlockingButton={isBlockingButton}
                         showMovies={showMovies}
                         savedMovies={savedMovies}
                         savedFilterMovies={savedFilterMovies}
@@ -443,14 +460,26 @@ function App() {
                 <Route
                   path="/profile"
                   element={
-                    loggedIn ? <Profile onUpdateUser={handleUpdateUser} onLogout={handleLogout} /> : <Navigate to="/" />
+                    loggedIn ? (
+                      <Profile
+                        isBlockingButton={isBlockingButton}
+                        onUpdateUser={handleUpdateUser}
+                        onLogout={handleLogout}
+                      />
+                    ) : (
+                      <Navigate to="/" />
+                    )
                   }
                 />
                 <Route
                   path="/signup"
                   element={
                     !currentUser._id ? (
-                      <Register resStatusOk={resStatus} onRegister={handleRegister} />
+                      <Register
+                        isBlockingButton={isBlockingButton}
+                        resStatusOk={resStatus}
+                        onRegister={handleRegister}
+                      />
                     ) : (
                       <Navigate to="/" />
                     )
@@ -459,7 +488,11 @@ function App() {
                 <Route
                   path="/signin"
                   element={
-                    !currentUser._id ? <Login resStatusOk={resStatus} onLogin={handleLogin} /> : <Navigate to="/" />
+                    !currentUser._id ? (
+                      <Login isBlockingButton={isBlockingButton} resStatusOk={resStatus} onLogin={handleLogin} />
+                    ) : (
+                      <Navigate to="/" />
+                    )
                   }
                 />
                 <Route path="*" element={<NotFound goBack={() => navigate(-1)} />} />

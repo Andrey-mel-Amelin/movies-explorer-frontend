@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function SearchForm({ formValues, checkboxFilter, onSearchSavedFilms, location, onSearchFilms }) {
+function SearchForm({ isBlockingButton, formValues, checkboxFilter, onSearchSavedFilms, location, onSearchFilms }) {
   const [isInvalid, setInvalid] = useState(false);
   const [searchValue, setSearchValue] = useState(location.pathname === '/movies' ? formValues.value : '');
   const [searchCheckbox, setCheckbox] = useState(location.pathname === '/movies' ? formValues.checkbox : false);
@@ -51,7 +51,7 @@ function SearchForm({ formValues, checkboxFilter, onSearchSavedFilms, location, 
         placeholder="Фильм"
       />
       <span className="search-form__error">{isInvalid && 'Нужно ввести ключевое слово'}</span>
-      <button className="search-form__submit" type="submit">
+      <button disabled={isBlockingButton} className="search-form__submit" type="submit">
         Найти
       </button>
       <label htmlFor="search-film" className="search-form__label">
