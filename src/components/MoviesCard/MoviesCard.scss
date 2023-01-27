@@ -48,8 +48,9 @@
 
   &__button {
     grid-area: button;
-    max-width: 14px;
-    max-height: 12px;
+    padding: 0;
+    max-width: 22px;
+    max-height: 22px;
     background-image: url('../../images/empty-like.svg');
     background-repeat: no-repeat;
     background-position: center;
@@ -59,8 +60,6 @@
     transition: 0.5s;
 
     @media screen and(max-width: 767px) {
-      min-width: 14px;
-      justify-self: flex-end;
       margin: 17.5px 16px 0 0px;
     }
 
