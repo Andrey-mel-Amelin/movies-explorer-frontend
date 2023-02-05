@@ -77,10 +77,10 @@
   }
 
   &__button {
+    color: black;
     max-width: max-content;
     padding: 0;
     border: none;
-    color: rgba(255, 64, 98, 1);
     background-color: transparent;
     transition: 0.5s;
     cursor: pointer;
@@ -110,7 +110,7 @@
 
       &:hover {
         opacity: 1;
-        cursor: not-allowed;
+        cursor: default;
       }
     }
   }

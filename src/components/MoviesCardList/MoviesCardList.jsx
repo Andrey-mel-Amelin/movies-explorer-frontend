@@ -34,7 +34,7 @@ function MoviesCardList({
             />
           ))}
           {location.pathname === '/movies' && filterMovies.length !== showMovies.length && (
-            <button onClick={onButtonMore} className="movies-card-list__button">
+            <button type="button" onClick={onButtonMore} className="movies-card-list__button">
               Ещё
             </button>
           )}

@@ -1,5 +1,5 @@
 .navigation {
-  display: grid;
+display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-areas: '. movies profile';
   align-items: center;
@@ -118,12 +118,12 @@
       line-height: 16px;
       justify-self: flex-end;
 
-      @media screen and(max-width: 1023px) {
+      @media screen and (max-width: 1023px) {
         display: grid;
         min-height: 35px;
         margin-top: 20vh;
         gap: 3px 17px;
-        grid-template-areas: 'profile logo' 'underline underline';
+        grid-template-areas: 'profile profile-logo' 'underline underline';
         justify-self: center;
         align-self: flex-start;
       }
@@ -135,7 +135,7 @@
   }
 
   &__profile-logo {
-    grid-area: logo;
+    grid-area: profile-logo;
     min-width: 26px;
     min-height: 30px;
     background-color: rgba(249, 249, 249, 1);

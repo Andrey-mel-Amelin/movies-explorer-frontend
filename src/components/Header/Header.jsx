@@ -9,7 +9,7 @@ function Header({ menuActivity, onMenuToggle, location }) {
 
   return (
     <header className={`header ${authPath.includes(location.pathname) ? 'header_for_auth' : ''}`}>
-      <Link to="/" className="logo" />
+      <Link to="/" className="logo" />{' '}
       {location.pathname === '/signin' && <h2 className="header__title">Рады видеть!</h2>}
       {location.pathname === '/signup' && <h2 className="header__title">Добро пожаловать!</h2>}
       <>
@@ -28,10 +28,7 @@ function Header({ menuActivity, onMenuToggle, location }) {
 
             {menuActivity && (
               <>
-                <div
-                  onClick={onMenuToggle}
-                  className='header__menu-container'
-                >
+                <div onClick={onMenuToggle} className="header__menu-container">
                   <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`} />
                 </div>
                 <Navigation location={location} menuActivity={menuActivity} />
@@ -41,10 +38,7 @@ function Header({ menuActivity, onMenuToggle, location }) {
         ) : (
           <>
             <Navigation location={location} menuActivity={menuActivity} />
-            <div
-              onClick={onMenuToggle}
-              className='header__menu-container'
-            >
+            <div onClick={onMenuToggle} className="header__menu-container">
               <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`} />
             </div>
           </>

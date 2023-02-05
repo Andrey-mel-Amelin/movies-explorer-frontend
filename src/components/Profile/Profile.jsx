@@ -60,7 +60,7 @@ function Profile({ isBlockingButton, onUpdateUser, onLogout }) {
           className={`profile__button profile__button_type_submit ${
             notValidToUpdate ? 'profile__button_type_error' : ''
           }`}
-          disabled={notValidToUpdate && isBlockingButton}
+          disabled={notValidToUpdate || isBlockingButton}
         >
           Редактировать
         </button>

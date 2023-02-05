@@ -106,6 +106,7 @@
   }
 
   &__photo {
+    pointer-events: none;
     max-width: 270px;
     max-height: 327px;
     background-image: url('../../images/student.jpeg');
