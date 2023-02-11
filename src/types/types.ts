@@ -21,7 +21,10 @@ type Movie = {
   duration: number;
   year: number;
   trailerLink: string;
-  image: { url: string };
+  image: string | {
+    url: string;
+    formats?: { thumbnail: { url: string } };
+  };
   thumbnail: string;
 };
 
@@ -31,4 +34,16 @@ type ErrorsProfile = {
   password?: number;
 };
 
-export type { FormValues, FormValuesProfile, Movie, ErrorsProfile };
+type MainApiReq = {
+  url: string;
+  method?: string;
+  data?:
+    | Movie
+    | {
+        name?: string;
+        email: string;
+        password?: number;
+      };
+};
+
+export type { FormValues, FormValuesProfile, Movie, ErrorsProfile, MainApiReq };

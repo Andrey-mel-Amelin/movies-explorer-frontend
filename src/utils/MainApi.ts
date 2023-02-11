@@ -1,7 +1,9 @@
+import { MainApiReq, Movie } from "../types/types";
+
 export const BASE_URL = 'https://api.amelin.movies.nomoredomains.club/';
 // export const BASE_URL = 'http://localhost:3001/'; // для разработки локально
 
-function request({ url, method = 'POST', data }) {
+function request({ url, method = 'POST', data }: MainApiReq) {
   return fetch(`${BASE_URL}${url}`, {
     method: method,
     headers: {
@@ -18,21 +20,21 @@ function request({ url, method = 'POST', data }) {
   });
 }
 
-export const register = (name, email, password) => {
+export const register = (name: string, email: string, password: number) => {
   return request({
     url: 'signup',
     data: { name, email, password },
   });
 };
 
-export const login = (email, password) => {
+export const login = (email: string, password: number) => {
   return request({
     url: 'signin',
     data: { email, password },
   });
 };
 
-export const updateUser = (name, email) => {
+export const updateUser = (name: string, email: string) => {
   return request({
     url: 'users/me',
     method: 'PATCH',
@@ -61,14 +63,14 @@ export const getMovies = () => {
   });
 };
 
-const unsaveMovies = (id) => {
+const unsaveMovies = (id: number) => {
   return request({
     url: `movies/${id}`,
     method: 'DELETE',
   });
 };
 
-const saveMovie = (reqBody) => {
+const saveMovie = (reqBody: Movie) => {
   return request({
     url: 'movies',
     data: {
@@ -77,10 +79,10 @@ const saveMovie = (reqBody) => {
       duration: reqBody.duration,
       year: reqBody.year,
       description: reqBody.description,
-      image: reqBody.image instanceof Object ? `https://api.nomoreparties.co/${reqBody.image.url}` : reqBody.image,
+      image: typeof reqBody.image !== 'string' ? `https://api.nomoreparties.co/${reqBody.image.url}` : reqBody.image,
       thumbnail:
-        reqBody.image instanceof Object
-          ? `https://api.nomoreparties.co/${reqBody.image.formats.thumbnail.url}`
+        typeof reqBody.image !== 'string'
+          ? `https://api.nomoreparties.co/${reqBody.image.formats!.thumbnail.url}`
           : reqBody.thumbnail,
       trailerLink: reqBody.trailerLink,
       movieId: reqBody.id,
@@ -90,6 +92,6 @@ const saveMovie = (reqBody) => {
   });
 };
 
-export const changeLikeMovieStatus = (reqBody, isLiked) => {
-  return !isLiked ? saveMovie(reqBody) : unsaveMovies(reqBody._id);
+export const changeLikeMovieStatus = (reqBody: Movie, isLiked: Movie | undefined) => {
+  return !isLiked ? saveMovie(reqBody) : unsaveMovies(reqBody._id!);
 };

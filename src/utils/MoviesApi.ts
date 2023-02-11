@@ -1,10 +1,10 @@
 class Api {
-  constructor(baseUrl, headers) {
-    this._baseUrl = baseUrl;
-    this._headers = headers;
+  constructor(public baseUrl: string, public headers: {}) {
+    this.baseUrl = baseUrl;
+    this.headers = headers;
   }
 
-  _getResponseData(res) {
+  _getResponseData(res: Response) {
     if (!res.ok) {
       return Promise.reject(`Ошибка: ${res.status}`);
     }
@@ -12,8 +12,8 @@ class Api {
   }
 
   _getFetch() {
-    return fetch(this._baseUrl, {
-      headers: this._headers,
+    return fetch(this.baseUrl, {
+      headers: this.headers,
     }).then((res) => this._getResponseData(res));
   }
 

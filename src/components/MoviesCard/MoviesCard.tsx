@@ -25,7 +25,7 @@ function MoviesCard({ savedMovies, isBlockingButton, movie, location, onMovieLik
           className="movies-card__image"
           alt={movie.nameRU}
           src={`${
-            location.pathname === '/saved-movies' ? movie.image : movie.image.url ? `https://api.nomoreparties.co/${movie.image.url}` : ''
+            location.pathname === '/saved-movies' ? movie.image : typeof movie.image !== 'string' ? `https://api.nomoreparties.co/${movie.image.url}` : ''
           }`}
         />
       </a>
