@@ -1,33 +1,21 @@
+import { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormWithValidation } from '../../hooks/validationForms';
+import { LoginComponent } from '../../types/componentsTypes';
 
-function Register({isBlockingButton, resStatus, onRegister }) {
+function Login({ isBlockingButton, resStatus, onLogin }: LoginComponent) {
   const { values, handleChange, errors, isValid } = useFormWithValidation();
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const { name, email, password } = values;
+    const { email, password } = values;
     if (!isValid) return;
-    onRegister(name, email, password);
+
+    onLogin(email!, password!);
   }
 
   return (
-    <form onSubmit={handleSubmit} className="form">
-      <label className="form__label">
-        Имя
-        <input
-          minLength="2"
-          onChange={handleChange}
-          value={values.name || ''}
-          name="name"
-          required
-          pattern="^[A-Za-zА-Яа-яЁё /s -]+$"
-          type="text"
-          className={`form__input ${errors.name ? 'form__input_type_error' : ''}`}
-          placeholder="Имя"
-        />
-        <span className="form__text-error">{errors.name || ''}</span>
-      </label>
+    <form onSubmit={handleSubmit} noValidate className="form">
       <label className="form__label">
         E-mail
         <input
@@ -48,7 +36,7 @@ function Register({isBlockingButton, resStatus, onRegister }) {
           value={values.password || ''}
           name="password"
           required
-          minLength="6"
+          minLength={6}
           type="password"
           className={`form__input ${errors.password ? 'form__input_type_error' : ''}`}
           placeholder="Пароль"
@@ -56,23 +44,23 @@ function Register({isBlockingButton, resStatus, onRegister }) {
         <span className="form__text-error">{errors.password || ''}</span>
       </label>
       <span className="form__text-error form__text-error_type_submit">
-        {resStatus === false && 'Произошла ошибка запроса регистрации.'}
+        {resStatus === false && 'Произошла ошибка запроса авторизации.'}
       </span>
       <button
         className={`form__button ${!isValid ? 'form__button_type_error' : ''}`}
         disabled={!isValid && isBlockingButton}
         type="submit"
       >
-        Зарегистрироваться
+        Войти
       </button>
       <p className="form__text">
-        Уже зарегистрированы?
-        <Link className="form__link" to="/signin">
-          Войти
+        Ещё не зарегистрированы?
+        <Link className="form__link" to="/signup">
+          Регистрация
         </Link>
       </p>
     </form>
   );
 }
 
-export default Register;
+export default Login;

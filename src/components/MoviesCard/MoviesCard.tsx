@@ -1,4 +1,6 @@
-function MoviesCard({ savedMovies, onMovieLike, isBlockingButton, movie, location }) {
+import { MoviesCardComponent } from '../../types/componentsTypes';
+
+function MoviesCard({ savedMovies, isBlockingButton, movie, location, onMovieLike }: MoviesCardComponent) {
   return (
     <article className="movies-card">
       <h3 className="movies-card__title">{movie.nameRU}</h3>
@@ -23,7 +25,7 @@ function MoviesCard({ savedMovies, onMovieLike, isBlockingButton, movie, locatio
           className="movies-card__image"
           alt={movie.nameRU}
           src={`${
-            location.pathname === '/saved-movies' ? movie.image : `https://api.nomoreparties.co/${movie.image.url}`
+            location.pathname === '/saved-movies' ? movie.image : movie.image.url ? `https://api.nomoreparties.co/${movie.image.url}` : ''
           }`}
         />
       </a>

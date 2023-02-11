@@ -51,6 +51,9 @@
   }
 
   &__back {
+    padding: 0;
+    border: none;
+    background-color: transparent;
     align-self: flex-start;
     margin-top: 185px;
     grid-area: back;

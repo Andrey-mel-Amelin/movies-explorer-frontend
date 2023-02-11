@@ -3,8 +3,9 @@ import Navigation from '../Navigation/Navigation';
 import { authPath } from '../../constants/constants';
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { HeaderComponent } from '../../types/componentsTypes';
 
-function Header({ menuActivity, onMenuToggle, location }) {
+function Header({ menuActivity, onMenuToggle, location }: HeaderComponent) {
   const currentUser = useContext(CurrentUserContext);
 
   return (
@@ -28,9 +29,9 @@ function Header({ menuActivity, onMenuToggle, location }) {
 
             {menuActivity && (
               <>
-                <div onClick={onMenuToggle} className="header__menu-container">
+                <button onClick={onMenuToggle} className="header__menu-container">
                   <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`} />
-                </div>
+                </button>
                 <Navigation location={location} menuActivity={menuActivity} />
               </>
             )}

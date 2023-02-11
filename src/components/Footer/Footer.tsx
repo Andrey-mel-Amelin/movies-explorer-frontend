@@ -1,6 +1,7 @@
 import { notFooterPaths } from "../../constants/constants";
+import { FooterComponent } from "../../types/componentsTypes";
 
-function Footer({ location }) {
+function Footer({ location }: FooterComponent) {
   return (
     <>
       {notFooterPaths.includes(location.pathname) && (

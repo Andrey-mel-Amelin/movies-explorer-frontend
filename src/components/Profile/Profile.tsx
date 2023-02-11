@@ -1,17 +1,18 @@
-import { useContext, useEffect } from 'react';
+import { FormEvent, useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormWithValidation } from '../../hooks/validationForms';
+import { ProfileComponent } from '../../types/componentsTypes';
 
-function Profile({ isBlockingButton, onUpdateUser, onLogout }) {
+function Profile({ isBlockingButton, onUpdateUser, onLogout }: ProfileComponent) {
   const currentUser = useContext(CurrentUserContext);
 
   const { values, handleChange, resetForm, errors, isValid } = useFormWithValidation();
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { name, email } = values;
     if (!isValid) return;
-    onUpdateUser(name, email);
+    onUpdateUser(name!, email!);
     resetForm();
   }
 
@@ -30,7 +31,7 @@ function Profile({ isBlockingButton, onUpdateUser, onLogout }) {
         <label className="profile__label">
           Имя
           <input
-            minLength="2"
+            minLength={2}
             onChange={handleChange}
             value={values.name || ''}
             name="name"

@@ -1,32 +1,41 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { SearchFormComponent } from '../../types/componentsTypes';
 
-function SearchForm({ isBlockingButton, formValues, checkboxFilter, onSearchSavedFilms, location, onSearchFilms }) {
+function SearchForm({
+  isBlockingButton,
+  formValues,
+  location,
+  checkboxFilter,
+  onSearchSavedFilms,
+  onSearchFilms,
+}: SearchFormComponent) {
   const [isInvalid, setInvalid] = useState(false);
-  const [searchValue, setSearchValue] = useState(location.pathname === '/movies' ? formValues.value : '');
-  const [searchCheckbox, setCheckbox] = useState(location.pathname === '/movies' ? formValues.checkbox : false);
+  const [searchValue, setSearchValue] = useState(location.pathname === '/movies' ? formValues!.value : '');
+  const [searchCheckbox, setCheckbox] = useState(location.pathname === '/movies' ? formValues!.checkbox : false);
 
   useEffect(() => {
     if (location.pathname === '/movies') {
-      setSearchValue(formValues.value);
-      setCheckbox(formValues.checkbox);
+      setSearchValue(formValues!.value);
+      setCheckbox(formValues!.checkbox);
     }
   }, [location, formValues]);
 
-  function handleValue(e) {
+  function handleValue(e: ChangeEvent<HTMLInputElement>) {
     setSearchValue(e.target.value);
   }
 
-  function handleCheckbox(e) {
+  function handleCheckbox(e: ChangeEvent<HTMLInputElement>) {
+    if (!searchValue) return;
     const checkboxValue = e.target.checked;
     setCheckbox(checkboxValue);
     checkboxFilter(searchValue, checkboxValue);
   }
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     // учитывать пустую строку поиска только на вкладке фильмов
-    if (e.target[0].value === '' && location.pathname === '/movies') {
+    if (searchValue === '' && location.pathname === '/movies') {
       setInvalid(true);
       return;
     }
@@ -34,9 +43,9 @@ function SearchForm({ isBlockingButton, formValues, checkboxFilter, onSearchSave
     setInvalid(false);
 
     if (location.pathname === '/movies') {
-      onSearchFilms(searchValue, searchCheckbox);
+      onSearchFilms!(searchValue, searchCheckbox);
     } else {
-      onSearchSavedFilms(searchValue, searchCheckbox);
+      onSearchSavedFilms!(searchValue, searchCheckbox);
     }
   }
 

@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import { authPath } from '../../constants/constants';
+import { NavigationComponent } from '../../types/componentsTypes';
 
-function Navigation({ location, menuActivity }) {
+function Navigation({ location, menuActivity }: NavigationComponent) {
   return (
-    !authPath.includes(location.pathname) && (
+    !authPath.includes(location.pathname) ? (
       <>
         <div className={`navigation ${menuActivity ? 'navigation_active' : ''}`}>
           <nav className={`navigation__links ${menuActivity ? 'navigation__links_active' : ''}`}>
@@ -46,7 +47,7 @@ function Navigation({ location, menuActivity }) {
           )}
         </div>
       </>
-    )
+    ) : <></>
   );
 }
 

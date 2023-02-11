@@ -1,4 +1,6 @@
-function InfoPopup({ isOpen, onClose, resStatus, resMessage }) {
+import { InfoPopupComponent } from "../../types/componentsTypes";
+
+function InfoPopup({ isOpen, resStatus, resMessage, onClose }: InfoPopupComponent) {
   return (
     <div className={`info-popup ${isOpen ? 'info-popup_visible' : ''}`} onClick={onClose}>
       <div

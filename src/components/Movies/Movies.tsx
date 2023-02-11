@@ -1,3 +1,4 @@
+import { MoviesComponent } from '../../types/componentsTypes';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 
@@ -15,14 +16,14 @@ function Movies({
   onMovieLike,
   onButtonMore,
   checkboxFilter,
-}) {
+}: MoviesComponent) {
   return (
     <section className="movies">
       <SearchForm
         isBlockingButton={isBlockingButton}
-        checkboxFilter={checkboxFilter}
         formValues={formValues}
         location={location}
+        checkboxFilter={checkboxFilter}
         onSearchFilms={onSearchFilms}
       />
       <p className="movies__error-message">
@@ -33,13 +34,13 @@ function Movies({
       <MoviesCardList
         isBlockingButton={isBlockingButton}
         showMovies={showMovies}
-        onButtonMore={onButtonMore}
-        onMovieLike={onMovieLike}
+        savedMovies={savedMovies}
+        filterMovies={filterMovies}
         resStatus={resStatus}
         isLoadingMovies={isLoadingMovies}
-        filterMovies={filterMovies}
-        savedMovies={savedMovies}
         location={location}
+        onMovieLike={onMovieLike}
+        onButtonMore={onButtonMore}
       />
     </section>
   );

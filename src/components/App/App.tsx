@@ -27,6 +27,8 @@ import InfoPopup from '../InfoPopup/InfoPopup';
 import Footer from '../Footer/Footer';
 import Preloader from '../Preloader/Preloader';
 
+import { FormValues, Movie } from '../../types/types';
+
 function App() {
   const location = useLocation(); // доступ к данным url
   const navigate = useNavigate(); // доступ к перемещениям по url
@@ -34,11 +36,11 @@ function App() {
   const [currentUser, setCurrentUser] = useState({ _id: '', email: '', name: '' }); // данные пользователя
   const [loggedIn, setLoggedIn] = useState(true); // авторизованный ли пользователь
 
-  const [allMovieslist, setAllMoviesList] = useState([]); // весь список фильмов с movieApi
-  const [filterMovies, setFilterMovies] = useState([]); // отфильтрованный список фильмов в movies
-  const [savedMovies, setSavedMovies] = useState([]); // список сохраненных фильмов
-  const [savedFilterMovies, setSavedFilterMovies] = useState([]); // отфильтрованный список фильмов в saved-movies
-  const [showMovies, setShowMovies] = useState([]); // список отображаемых фильмов в movieCardList
+  const [allMovieslist, setAllMoviesList] = useState<Movie[]>([]); // весь список фильмов с movieApi
+  const [filterMovies, setFilterMovies] = useState<Movie[]>([]); // отфильтрованный список фильмов в movies
+  const [savedMovies, setSavedMovies] = useState<Movie[]>([]); // список сохраненных фильмов
+  const [savedFilterMovies, setSavedFilterMovies] = useState<Movie[]>([]); // отфильтрованный список фильмов в saved-movies
+  const [showMovies, setShowMovies] = useState<Movie[]>([]); // список отображаемых фильмов в movieCardList
 
   const [isOpenAuthPopup, setIsOpenAuthPopup] = useState(false); // попап с ответом от сервера
   const [resMessage, setResMessage] = useState(''); // сообщение в попапе с ответом от сервера
@@ -52,9 +54,9 @@ function App() {
 
   const [stepShowMovies, setStepShowMovies] = useState(valueShowMovieForDesktop); // количество отображаемых фильмов
 
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<FormValues>({
     value: '',
-    checkbox: '',
+    checkbox: false,
   }); // значения инпутов из формы
   const { resetForm } = useFormWithValidation();
 
@@ -68,8 +70,8 @@ function App() {
     // проверяем наличие значение для поиска в локальном хранилище и подставляем в форму
     if (valueLocal || checkboxLocal) {
       setFormValues({
-        value: JSON.parse(valueLocal),
-        checkbox: JSON.parse(checkboxLocal),
+        value: JSON.parse(valueLocal!),
+        checkbox: JSON.parse(checkboxLocal!),
       });
     }
 
@@ -148,7 +150,7 @@ function App() {
   }, [filterMovies, savedMovies, isSavedSearch, savedFilterMovies, stepShowMovies, location.pathname]);
 
   // регистрация
-  function handleRegister(name, email, password) {
+  function handleRegister(name: string, email: string, password: number) {
     setIsBlockingButton(true); // отключаем кнопку отправки форму
     return mainApi
       .register(name, email, password)
@@ -174,7 +176,7 @@ function App() {
   }
 
   // авторизация
-  function handleLogin(email, password) {
+  function handleLogin(email: string, password: number) {
     setIsBlockingButton(true); // отключаем кнопку отправки форму
     setLoggedIn(true);
     return mainApi
@@ -202,7 +204,7 @@ function App() {
   }
 
   // редактирование профиля
-  function handleUpdateUser(name, email) {
+  function handleUpdateUser(name: string, email: string) {
     setIsBlockingButton(true); // отключаем кнопку отправки форму
     return mainApi
       .updateUser(name, email)
@@ -238,7 +240,7 @@ function App() {
         setShowMovies([]);
         setFormValues({
           value: '',
-          checkbox: '',
+          checkbox: false,
         });
         localStorage.clear(); // очищаем локальное хранилище
       })
@@ -252,14 +254,14 @@ function App() {
   }
 
   // функция установки значений из формы в локальное хранилище
-  function setItemLocalStorage(name, item) {
+  function setItemLocalStorage(name: string, item: string | boolean) {
     if (item === null || item === undefined) return;
     localStorage.setItem(`search-${name}`, JSON.stringify(item));
   }
 
   // фильтрация всех фильмов по значениям из формы
   // если списка всех фильмов еще нет, получение их из movieApi
-  function handleSearchFilms(value, checkbox) {
+  function handleSearchFilms(value: string, checkbox: boolean) {
     // указываем что это не поиск на странице сохраненных фильмов
     setIsSavedSearch(false);
 
@@ -274,7 +276,7 @@ function App() {
       checkbox: checkbox,
     });
 
-    function filter(movieList) {
+    function filter(movieList: Movie[]) {
       // изменяем количество добавляемых карточек с фильмами в зависимости от ширины экрана
       window.screen.width <= 768
         ? setStepShowMovies(valueShowMovieForMobile)
@@ -295,8 +297,8 @@ function App() {
 
     if (!allMovieslist.length) {
       setIsBlockingButton(true); // отключаем кнопку отправки форму
-
       setIsLoadingMovies(true);
+
       api
         .getMovies()
         .then((movies) => {
@@ -320,7 +322,7 @@ function App() {
   }
 
   // фильтрация сохраненных фильмов по значениям из формы
-  function handleSearchSavedFilms(value, checkbox) {
+  function handleSearchSavedFilms(value: string, checkbox: boolean) {
     // указываем что это поиск на странице с сохраненными фильмами
     setIsSavedSearch(true);
 
@@ -345,8 +347,10 @@ function App() {
   }
 
   // функция живого чек-бокса
-  function checkboxFilter(value, checkbox) {
+  function checkboxFilter(value: string, checkbox: boolean) {
     setItemLocalStorage('checkbox', checkbox);
+
+    if (!allMovieslist.length) return;
 
     if (location.pathname === '/movies') {
       handleSearchFilms(value, checkbox);
@@ -356,7 +360,7 @@ function App() {
   }
 
   // добавить/убрать фильм(лайк)
-  function handleMovieLike(movie) {
+  function handleMovieLike(movie: Movie) {
     // ищем фильм в массиве с сохраненными фильмами
     const savedMovie = savedMovies.find((i) => i.movieId === movie.id || movie.movieId);
 
@@ -447,7 +451,6 @@ function App() {
                         resStatus={resStatus}
                         isSavedSearch={isSavedSearch}
                         location={location}
-                        formValues={formValues}
                         onSearchSavedFilms={handleSearchSavedFilms}
                         onMovieLike={handleMovieLike}
                         checkboxFilter={checkboxFilter}
@@ -475,11 +478,7 @@ function App() {
                   path="/signup"
                   element={
                     !currentUser._id ? (
-                      <Register
-                        isBlockingButton={isBlockingButton}
-                        resStatusOk={resStatus}
-                        onRegister={handleRegister}
-                      />
+                      <Register isBlockingButton={isBlockingButton} resStatus={resStatus} onRegister={handleRegister} />
                     ) : (
                       <Navigate to="/" />
                     )
@@ -489,7 +488,7 @@ function App() {
                   path="/signin"
                   element={
                     !currentUser._id ? (
-                      <Login isBlockingButton={isBlockingButton} resStatusOk={resStatus} onLogin={handleLogin} />
+                      <Login isBlockingButton={isBlockingButton} resStatus={resStatus} onLogin={handleLogin} />
                     ) : (
                       <Navigate to="/" />
                     )
@@ -500,11 +499,11 @@ function App() {
             </main>
             <InfoPopup
               isOpen={isOpenAuthPopup}
+              resStatus={resStatus}
+              resMessage={resMessage}
               onClose={() => {
                 setIsOpenAuthPopup(false);
               }}
-              resStatus={resStatus}
-              resMessage={resMessage}
             />
             <Footer location={location} />
           </>

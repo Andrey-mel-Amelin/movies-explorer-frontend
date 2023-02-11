@@ -1,3 +1,4 @@
+import { MoviesCardListComponent } from '../../types/componentsTypes';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
 
@@ -11,7 +12,7 @@ function MoviesCardList({
   location,
   onMovieLike,
   onButtonMore,
-}) {
+}: MoviesCardListComponent) {
   return (
     <section className="movies-card-list">
       {isLoadingMovies ? (

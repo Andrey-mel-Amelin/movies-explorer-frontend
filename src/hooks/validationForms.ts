@@ -1,12 +1,13 @@
-import { useCallback, useState } from 'react';
+import { ChangeEvent, useCallback, useState } from 'react';
 import validator from 'validator';
+import { ErrorsProfile, FormValuesProfile } from '../types/types';
 
 export function useFormWithValidation() {
-  const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
+  const [values, setValues] = useState<FormValuesProfile>({});
+  const [errors, setErrors] = useState<ErrorsProfile>({});
   const [isValid, setIsValid] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const name = target.name;
     const value = target.value;
@@ -26,11 +27,11 @@ export function useFormWithValidation() {
     }
 
     setValues({ ...values, [name]: value });
-    setIsValid(target.closest('form').checkValidity());
+    setIsValid(target.closest('form')!.checkValidity());
   };
 
   const resetForm = useCallback(
-    (newValues = {}, newErrors = {}, newIsValid = false) => {
+    (newValues: FormValuesProfile = { name: '', email: '' }, newErrors = {}, newIsValid = false) => {
       setValues(newValues);
       setErrors(newErrors);
       setIsValid(newIsValid);

@@ -1,3 +1,4 @@
+import { SavedMoviesComponent } from '../../types/componentsTypes';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 
@@ -12,7 +13,7 @@ function SavedMovies({
   onSearchSavedFilms,
   onMovieLike,
   checkboxFilter,
-}) {
+}: SavedMoviesComponent) {
   return (
     <section className="saved-movies">
       <SearchForm
@@ -29,7 +30,7 @@ function SavedMovies({
       <MoviesCardList
         showMovies={showMovies}
         savedMovies={savedMovies}
-        savedFilterMovies={savedFilterMovies}
+        filterMovies={savedFilterMovies}
         resStatus={resStatus}
         location={location}
         onMovieLike={onMovieLike}

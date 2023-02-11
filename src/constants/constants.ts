@@ -1,0 +1,9 @@
+export const notFooterPaths: string[] = ['/', '/movies', '/saved-movies']; // url где не нужно использовать футер
+export const authPath: string[] = ['/signin', '/signup']; // url для регистрации/логина
+export const moviesPath: string[] = ['/movies', '/saved-movies'];
+export const valueLocal: string | null = localStorage.getItem('search-value'); // получить строку поиска из локального хранилища
+export const checkboxLocal: string | null = localStorage.getItem('search-checkbox'); // получить состояние чебокса из локального хранилища
+export const moviesLocal: string | null = localStorage.getItem(`movies`); // получить массив всех фильмов из локального хранилища
+export const duration: number = 40; // верхний порог длительности короткометражек
+export const valueShowMovieForDesktop: number = 7; // количество добавляемых для отображения фильмов по кнопке "Ещё" на компьютере
+export const valueShowMovieForMobile: number = 5; // количество добавляемых для отображения фильмов по кнопке "Ещё" на мобильном

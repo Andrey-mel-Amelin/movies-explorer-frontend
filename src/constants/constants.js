@@ -1,9 +1,0 @@
-export const notFooterPaths = ['/', '/movies', '/saved-movies']; // url где не нужно использовать футер
-export const authPath = ['/signin', '/signup']; // url для регистрации/логина
-export const moviesPath = ['/movies', '/saved-movies'];
-export const valueLocal = localStorage.getItem('search-value'); // получить строку поиска из локального хранилища
-export const checkboxLocal = localStorage.getItem('search-checkbox'); // получить состояние чебокса из локального хранилища
-export const moviesLocal = localStorage.getItem(`movies`); // получить массив всех фильмов из локального хранилища
-export const duration = 40; // верхний порог длительности короткометражек
-export const valueShowMovieForDesktop = 7; // количество добавляемых для отображения фильмов по кнопке "Ещё" на компьютере
-export const valueShowMovieForMobile = 5; // количество добавляемых для отображения фильмов по кнопке "Ещё" на мобильном
