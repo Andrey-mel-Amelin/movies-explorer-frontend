@@ -25,7 +25,7 @@ function SearchForm({
   }
 
   function handleCheckbox(e: ChangeEvent<HTMLInputElement>) {
-    if (!searchValue) return;
+    if (!searchValue && location.pathname === '/movies') return;
     const checkboxValue = e.target.checked;
     setCheckbox(checkboxValue);
     checkboxFilter(searchValue, checkboxValue);
