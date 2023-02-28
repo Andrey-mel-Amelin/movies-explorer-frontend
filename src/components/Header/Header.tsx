@@ -32,13 +32,13 @@ function Header({ menuActivity, onMenuToggle, location }: HeaderComponent) {
                 <button onClick={onMenuToggle} className="header__menu-container">
                   <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`} />
                 </button>
-                <Navigation location={location} menuActivity={menuActivity} />
+                <Navigation onClick={onMenuToggle} location={location} menuActivity={menuActivity} />
               </>
             )}
           </>
         ) : (
           <>
-            <Navigation location={location} menuActivity={menuActivity} />
+            <Navigation onClick={onMenuToggle} location={location} menuActivity={menuActivity} />
             <div onClick={onMenuToggle} className="header__menu-container">
               <span className={`header__menu ${menuActivity ? 'header__menu_active' : ''}`} />
             </div>

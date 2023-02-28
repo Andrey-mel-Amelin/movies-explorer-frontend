@@ -10,6 +10,7 @@ type HeaderComponent = {
 type NavigationComponent = {
   menuActivity: boolean;
   location: Location;
+  onClick: any
 };
 
 type MoviesComponent = {

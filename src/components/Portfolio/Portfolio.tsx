@@ -28,7 +28,7 @@ function Portfolio() {
         <li className="portfolio__list-item">
           <a
             className="portfolio__link"
-            href="https://github.com/Andrey-mel-Amelin/react-mesto-api-full"
+            href="https://github.com/Andrey-mel-Amelin/black-sharks-sushi"
             target="_blank"
             rel="noreferrer"
           >

@@ -350,9 +350,7 @@ function App() {
   function checkboxFilter(value: string, checkbox: boolean) {
     setItemLocalStorage('checkbox', checkbox);
 
-    if (!allMovieslist.length) return;
-
-    if (location.pathname === '/movies') {
+    if (location.pathname === '/movies' && allMovieslist.length) {
       handleSearchFilms(value, checkbox);
     } else {
       handleSearchSavedFilms(value, checkbox);

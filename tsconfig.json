@@ -14,7 +14,6 @@
     "jsx": "react-jsx",
     "noEmit": true,
     "strict": true,
-
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
