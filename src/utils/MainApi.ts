@@ -1,7 +1,6 @@
 import { MainApiReq, Movie } from "../types/types";
 
-export const BASE_URL = 'https://api.amelin.movies.nomoredomains.club/';
-// export const BASE_URL = 'http://localhost:3001/'; // для разработки локально
+export const BASE_URL = process.env.BACKEND_URL || 'http://localhost:3001/';
 
 function request({ url, method = 'POST', data }: MainApiReq) {
   return fetch(`${BASE_URL}${url}`, {
