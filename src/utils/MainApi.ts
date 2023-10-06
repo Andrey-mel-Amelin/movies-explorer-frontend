@@ -1,6 +1,6 @@
 import { MainApiReq, Movie } from "../types/types";
 
-export const BASE_URL = process.env.BACKEND_URL || 'http://localhost:3001/';
+export const BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:3001/';
 
 function request({ url, method = 'POST', data }: MainApiReq) {
   return fetch(`${BASE_URL}${url}`, {
