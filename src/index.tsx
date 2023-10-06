@@ -2,7 +2,6 @@ import ReactDOM from 'react-dom/client';
 import './index.scss';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from './components/App/App';
-require('dotenv').config();
 
 const router = createBrowserRouter([
   {
