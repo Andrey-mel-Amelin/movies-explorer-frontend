@@ -26,8 +26,8 @@ export const register = (name: string, email: string, password: number) => {
   });
 };
 
-export const login = (email: string, password: number) => {
-  return request({
+export const login = async (email: string, password: number) => {
+  return await request({
     url: 'signin',
     data: { email, password },
   });
@@ -48,8 +48,8 @@ export const logout = () => {
   });
 };
 
-export const checkToken = () => {
-  return request({
+export  const checkToken = async () => {
+  return await request({
     url: 'users/me',
     method: 'GET',
   });
