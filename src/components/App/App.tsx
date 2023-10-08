@@ -126,15 +126,9 @@ function App() {
   // удаление прослушивателя при переходе за пределы /movies
   useEffect(() => {
     if (location.pathname === '/movies') {
-      window.addEventListener('resize', () => {
-        setTimeout(() => {
-          window.screen.width <= 768
-            ? setStepShowMovies(valueShowMovieForMobile)
-            : setStepShowMovies(valueShowMovieForDesktop);
-        }, 3000);
-      });
-    } else {
-      window.removeEventListener('resize', () => {});
+      window.screen.width <= 768
+        ? setStepShowMovies(valueShowMovieForMobile)
+        : setStepShowMovies(valueShowMovieForDesktop);
     }
   }, [location.pathname]);
 
